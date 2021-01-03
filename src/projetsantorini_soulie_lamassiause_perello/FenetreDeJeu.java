@@ -37,6 +37,8 @@ public class FenetreDeJeu extends javax.swing.JFrame {
     boolean PlacementPion1_J4 = false;
     boolean PlacementPion2_J4 = false;
     boolean PersoSelectionne = false;
+    boolean Deplacement = false;
+    boolean Construction = false;
 
     /**
      * Creates new form FenetreDeJeu
@@ -53,22 +55,14 @@ public class FenetreDeJeu extends javax.swing.JFrame {
                 CelluleGraphique CellGraph = new CelluleGraphique(PDJ.Cases[i][j], i, j);
                 CellGraph.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        //message.setText("la case sélectionée est :["+i+","+j);
+                        if (Construction==true){
+                            ConstruireBloc(CellGraph,JoueurCourantPartie.Pion1,CellGraph.coord_x,CellGraph.coord_y);
+                        }
+                        if (Deplacement==true){
+                            DeplacerPerso(CellGraph,CellGraph.coord_x,CellGraph.coord_y);
+                        }
                         PlacerPions(CellGraph);
-                        if (PersoSelectionne == false) {
-                            //phase de sélection de personnage qui se trouve sur la case [i,j]
-                            if (CellGraph.CelluleAssociee.PresencePion(JoueurCourantPartie.Pion1) == true || CellGraph.CelluleAssociee.PresencePion(JoueurCourantPartie.Pion2) == true) {
-                                //xlast=i;
-                                //ylast=j;
-                                PersoSelectionne = true;
-                            }
-                        }
-                        if (PersoSelectionne == true) {
-                            //phase de déplacement du personnage : on a cliqué sur la case de destination [i,j]
-                            PDJ.Cases[xlast][ylast].AffecterPion(JoueurCourantPartie.Pion1);
-                            PersoSelectionne = false;
-                        }
-
+                        
                     }
                 });
                 PlateauDeJeu.add(CellGraph);
@@ -79,60 +73,94 @@ public class FenetreDeJeu extends javax.swing.JFrame {
     public void PlacerPions(CelluleGraphique CellGraph) {
         if (PlacementPion2_J4 == true) {
             CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion2);
+            JoueurSuivant();
+            message.setText(JoueurCourantPartie.Nom + " quel pion souhaitez vous déplacer?");
+            Deplacement=true;
             PlacementPion2_J4 = false;
         }
         if (PlacementPion1_J4 == true) {
             CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion1);
-            message.setText(JoueurCourantPartie.Nom+" Placez votre 2ème pion");
+            message.setText(JoueurCourantPartie.Nom + " placez votre 2ème pion");
             PlacementPion2_J4 = true;
             PlacementPion1_J4 = false;
         }
         if (PlacementPion2_J3 == true) {
             CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion2);
-            if (NombreDeJoueurs()==4){
+            if (NombreDeJoueurs() == 4) {
                 JoueurSuivant();
-                message.setText("Le prochain Joueur est: " + JoueurCourantPartie.Nom+"\n"+JoueurCourantPartie.Nom+" vous pouvez placer votre premier pion");
+                message.setText("C'est au tour de " + JoueurCourantPartie.Nom + "\n\n" + JoueurCourantPartie.Nom + " vous pouvez placer votre premier pion");
                 PlacementPion1_J4 = true;
+            }else{
+                JoueurSuivant();
+                message.setText(JoueurCourantPartie.Nom + " quel pion souhaitez vous déplacer?");
+                Deplacement=true;
             }
             PlacementPion2_J3 = false;
         }
         if (PlacementPion1_J3 == true) {
             CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion1);
-            message.setText(JoueurCourantPartie.Nom+" Placez votre 2ème pion");
+            message.setText(JoueurCourantPartie.Nom + " placez votre 2ème pion");
             PlacementPion2_J3 = true;
             PlacementPion1_J3 = false;
         }
         if (PlacementPion2_J2 == true) {
             CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion2);
-            if (NombreDeJoueurs()==3){
+            if (NombreDeJoueurs() == 3) {
                 JoueurSuivant();
-                message.setText("Le prochain Joueur est: " + JoueurCourantPartie.Nom+"\n"+JoueurCourantPartie.Nom+" vous pouvez placer votre premier pion");
+                message.setText("C'est au tour de " + JoueurCourantPartie.Nom + "\n\n" + JoueurCourantPartie.Nom + " vous pouvez placer votre premier pion");
                 PlacementPion1_J3 = true;
+            }else{
+                JoueurSuivant();
+                message.setText(JoueurCourantPartie.Nom + " quel pion souhaitez vous déplacer?");
+                Deplacement=true;
             }
             PlacementPion2_J2 = false;
         }
         if (PlacementPion1_J2 == true) {
             CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion1);
-            message.setText(JoueurCourantPartie.Nom+" Placez votre 2ème pion");
+            message.setText(JoueurCourantPartie.Nom + " placez votre 2ème pion");
             PlacementPion2_J2 = true;
             PlacementPion1_J2 = false;
         }
         if (PlacementPion2_J1 == true) {
             CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion2);
             JoueurSuivant();
-            message.setText("Le prochain Joueur est: " + JoueurCourantPartie.Nom+"\n"+JoueurCourantPartie.Nom+" vous pouvez placer votre premier pion");
+            message.setText("C'est au tour de " + JoueurCourantPartie.Nom + "\n\n" + JoueurCourantPartie.Nom + " vous pouvez placer votre premier pion");
             PlacementPion1_J2 = true;
             PlacementPion2_J1 = false;
         }
         if (PlacementPion1_J1 == true) {
             CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion1);
-            message.setText(JoueurCourantPartie.Nom+" Placez votre 2ème pion");
+            message.setText(JoueurCourantPartie.Nom + " placez votre 2ème pion");
             PlacementPion2_J1 = true;
             PlacementPion1_J1 = false;
         }
 
     }
 
+    public void DeplacerPerso(CelluleGraphique CellGraph, int i, int j) {
+        if (PersoSelectionne == true) {
+            //phase de déplacement du personnage : on a cliqué sur la case de destination [i,j]
+            PDJ.DeplacerPion(JoueurCourantPartie.Pion1,i,j);
+            PDJ.Cases[xlast][ylast].SupprimerPion();//supprimer le pion qui était à la position d'avant
+            PlateauDeJeu.repaint();
+            PersoSelectionne = false;
+        }
+        if (PersoSelectionne == false) {
+            //phase de sélection de personnage qui se trouve sur la case [i,j]
+            if (CellGraph.CelluleAssociee.PresencePion(JoueurCourantPartie.Pion1) == true || CellGraph.CelluleAssociee.PresencePion(JoueurCourantPartie.Pion2) == true) {
+                xlast=CellGraph.coord_x;
+                ylast=CellGraph.coord_y;
+                PersoSelectionne = true;
+            }
+        }
+        Construction = true;
+        
+    }
+
+    public void ConstruireBloc(CelluleGraphique CellGraph,Pion PionAdjacent, int i, int j){
+        PDJ.AjouterBlocSurCellule(BlocCourantPartie, PionAdjacent, i, j);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -453,7 +481,7 @@ public class FenetreDeJeu extends javax.swing.JFrame {
             JoueurCourantPartie.Pion2 = new Pion(JoueurCourantPartie.CouleurJoueur);
             JoueurSuivant();
         }
-        message.setText(JoueurCourantPartie.Nom+" Sélectionnez une case pour placer votre premier pion");
+        message.setText(JoueurCourantPartie.Nom + " vous êtes le premier joueur à jouer. \n\n Sélectionnez une case pour placer votre premier pion");
 
     }
 
@@ -539,7 +567,7 @@ public class FenetreDeJeu extends javax.swing.JFrame {
                 jlb_J2_couleur.setForeground(new java.awt.Color(255, 51, 51));
                 ListeJoueur.get(0).AffecterCouleurAuJoueur("Bleue");
                 jlb_J1_couleur.setForeground(new java.awt.Color(51, 102, 255));
-                
+
             }
             jlb_J1_couleur.setText(ListeJoueur.get(0).CouleurJoueur);
             jlb_J2_couleur.setText(ListeJoueur.get(1).CouleurJoueur);
@@ -549,35 +577,44 @@ public class FenetreDeJeu extends javax.swing.JFrame {
             int CouleurAleatoire1 = 1 + (int) (Math.random() * ((3 - 1) + 1));
             if (CouleurAleatoire1 == 1) {
                 ListeJoueur.get(0).AffecterCouleurAuJoueur("Rouge");
+                jlb_J1_couleur.setForeground(new java.awt.Color(255, 51, 51));
                 int CouleurAleatoire2 = 1 + (int) (Math.random() * ((2 - 1) + 1));
                 if (CouleurAleatoire2 == 1) {
                     ListeJoueur.get(1).AffecterCouleurAuJoueur("Noire");
                     ListeJoueur.get(2).AffecterCouleurAuJoueur("Bleue");
+                    jlb_J3_couleur.setForeground(new java.awt.Color(51, 102, 255));
                 } else {
                     ListeJoueur.get(2).AffecterCouleurAuJoueur("Noire");
                     ListeJoueur.get(1).AffecterCouleurAuJoueur("Bleue");
+                    jlb_J2_couleur.setForeground(new java.awt.Color(51, 102, 255));
                 }
             }
             if (CouleurAleatoire1 == 2) {
                 ListeJoueur.get(1).AffecterCouleurAuJoueur("Rouge");
+                jlb_J2_couleur.setForeground(new java.awt.Color(255, 51, 51));
                 int CouleurAleatoire2 = 1 + (int) (Math.random() * ((2 - 1) + 1));
                 if (CouleurAleatoire2 == 1) {
                     ListeJoueur.get(2).AffecterCouleurAuJoueur("Noire");
                     ListeJoueur.get(0).AffecterCouleurAuJoueur("Bleue");
+                    jlb_J1_couleur.setForeground(new java.awt.Color(51, 102, 255));
                 } else {
                     ListeJoueur.get(0).AffecterCouleurAuJoueur("Noire");
                     ListeJoueur.get(2).AffecterCouleurAuJoueur("Bleue");
+                    jlb_J3_couleur.setForeground(new java.awt.Color(51, 102, 255));
                 }
             }
             if (CouleurAleatoire1 == 3) {
                 ListeJoueur.get(2).AffecterCouleurAuJoueur("Rouge");
+                jlb_J3_couleur.setForeground(new java.awt.Color(255, 51, 51));
                 int CouleurAleatoire2 = 1 + (int) (Math.random() * ((2 - 1) + 1));
                 if (CouleurAleatoire2 == 1) {
                     ListeJoueur.get(1).AffecterCouleurAuJoueur("Noire");
                     ListeJoueur.get(0).AffecterCouleurAuJoueur("Bleue");
+                    jlb_J1_couleur.setForeground(new java.awt.Color(51, 102, 255));
                 } else {
                     ListeJoueur.get(0).AffecterCouleurAuJoueur("Noire");
                     ListeJoueur.get(1).AffecterCouleurAuJoueur("Bleue");
+                    jlb_J2_couleur.setForeground(new java.awt.Color(51, 102, 255));
                 }
             }
             jlb_J1_couleur.setText(ListeJoueur.get(0).CouleurJoueur);
@@ -586,162 +623,20 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         }
         //pour une partie à 4 joueurs:
         if (nbJoueurs == 4) {
-            int CouleurAleatoire1 = 1 + (int) (Math.random() * ((4 - 1) + 1));
-            if (CouleurAleatoire1 == 1) {
-                ListeJoueur.get(0).AffecterCouleurAuJoueur("Rouge");
-                int CouleurAleatoire2 = 1 + (int) (Math.random() * ((3 - 1) + 1));
-                if (CouleurAleatoire2 == 1) {
-                    ListeJoueur.get(1).AffecterCouleurAuJoueur("Noire");
-                    int CouleurAleatoire3 = 1 + (int) (Math.random() * ((2 - 1) + 1));
-                    if (CouleurAleatoire3 == 1) {
-                        ListeJoueur.get(2).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(3).AffecterCouleurAuJoueur("Verte");
-                    } else {
-                        ListeJoueur.get(3).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(2).AffecterCouleurAuJoueur("Verte");
-                    }
-                }
-                if (CouleurAleatoire2 == 2) {
-                    ListeJoueur.get(2).AffecterCouleurAuJoueur("Noire");
-                    int CouleurAleatoire3 = 1 + (int) (Math.random() * ((2 - 1) + 1));
-                    if (CouleurAleatoire3 == 1) {
-                        ListeJoueur.get(1).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(3).AffecterCouleurAuJoueur("Verte");
-                    } else {
-                        ListeJoueur.get(3).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(1).AffecterCouleurAuJoueur("Verte");
-                    }
-                }
-                if (CouleurAleatoire2 == 3) {
-                    ListeJoueur.get(3).AffecterCouleurAuJoueur("Noire");
-                    int CouleurAleatoire3 = 1 + (int) (Math.random() * ((2 - 1) + 1));
-                    if (CouleurAleatoire3 == 1) {
-                        ListeJoueur.get(2).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(1).AffecterCouleurAuJoueur("Verte");
-                    } else {
-                        ListeJoueur.get(1).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(2).AffecterCouleurAuJoueur("Verte");
-                    }
-                }
-            }
-            if (CouleurAleatoire1 == 2) {
-                ListeJoueur.get(1).AffecterCouleurAuJoueur("Rouge");
-                int CouleurAleatoire2 = 1 + (int) (Math.random() * ((3 - 1) + 1));
-                if (CouleurAleatoire2 == 1) {
-                    ListeJoueur.get(0).AffecterCouleurAuJoueur("Noire");
-                    int CouleurAleatoire3 = 1 + (int) (Math.random() * ((2 - 1) + 1));
-                    if (CouleurAleatoire3 == 1) {
-                        ListeJoueur.get(2).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(3).AffecterCouleurAuJoueur("Verte");
-                    } else {
-                        ListeJoueur.get(3).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(2).AffecterCouleurAuJoueur("Verte");
-                    }
-                }
-                if (CouleurAleatoire2 == 2) {
-                    ListeJoueur.get(2).AffecterCouleurAuJoueur("Noire");
-                    int CouleurAleatoire3 = 1 + (int) (Math.random() * ((2 - 1) + 1));
-                    if (CouleurAleatoire3 == 1) {
-                        ListeJoueur.get(0).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(3).AffecterCouleurAuJoueur("Verte");
-                    } else {
-                        ListeJoueur.get(3).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(0).AffecterCouleurAuJoueur("Verte");
-                    }
-                }
-                if (CouleurAleatoire2 == 3) {
-                    ListeJoueur.get(3).AffecterCouleurAuJoueur("Noire");
-                    int CouleurAleatoire3 = 1 + (int) (Math.random() * ((2 - 1) + 1));
-                    if (CouleurAleatoire3 == 1) {
-                        ListeJoueur.get(2).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(0).AffecterCouleurAuJoueur("Verte");
-                    } else {
-                        ListeJoueur.get(0).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(2).AffecterCouleurAuJoueur("Verte");
-                    }
-                }
-            }
-            if (CouleurAleatoire1 == 3) {
-                ListeJoueur.get(2).AffecterCouleurAuJoueur("Rouge");
-                int CouleurAleatoire2 = 1 + (int) (Math.random() * ((3 - 1) + 1));
-                if (CouleurAleatoire2 == 1) {
-                    ListeJoueur.get(1).AffecterCouleurAuJoueur("Noire");
-                    int CouleurAleatoire3 = 1 + (int) (Math.random() * ((2 - 1) + 1));
-                    if (CouleurAleatoire3 == 1) {
-                        ListeJoueur.get(0).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(3).AffecterCouleurAuJoueur("Verte");
-                    } else {
-                        ListeJoueur.get(3).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(0).AffecterCouleurAuJoueur("Verte");
-                    }
-                }
-                if (CouleurAleatoire2 == 2) {
-                    ListeJoueur.get(0).AffecterCouleurAuJoueur("Noire");
-                    int CouleurAleatoire3 = 1 + (int) (Math.random() * ((2 - 1) + 1));
-                    if (CouleurAleatoire3 == 1) {
-                        ListeJoueur.get(1).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(3).AffecterCouleurAuJoueur("Verte");
-                    } else {
-                        ListeJoueur.get(3).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(1).AffecterCouleurAuJoueur("Verte");
-                    }
-                }
-                if (CouleurAleatoire2 == 3) {
-                    ListeJoueur.get(3).AffecterCouleurAuJoueur("Noire");
-                    int CouleurAleatoire3 = 1 + (int) (Math.random() * ((2 - 1) + 1));
-                    if (CouleurAleatoire3 == 1) {
-                        ListeJoueur.get(0).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(1).AffecterCouleurAuJoueur("Verte");
-                    } else {
-                        ListeJoueur.get(0).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(2).AffecterCouleurAuJoueur("Verte");
-                    }
-                }
-            }
-            if (CouleurAleatoire1 == 4) {
-                ListeJoueur.get(3).AffecterCouleurAuJoueur("Rouge");
-                int CouleurAleatoire2 = 1 + (int) (Math.random() * ((3 - 1) + 1));
-                if (CouleurAleatoire2 == 1) {
-                    ListeJoueur.get(1).AffecterCouleurAuJoueur("Noire");
-                    int CouleurAleatoire3 = 1 + (int) (Math.random() * ((2 - 1) + 1));
-                    if (CouleurAleatoire3 == 1) {
-                        ListeJoueur.get(2).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(0).AffecterCouleurAuJoueur("Verte");
-                    } else {
-                        ListeJoueur.get(0).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(2).AffecterCouleurAuJoueur("Verte");
-                    }
-                }
-                if (CouleurAleatoire2 == 2) {
-                    ListeJoueur.get(2).AffecterCouleurAuJoueur("Noire");
-                    int CouleurAleatoire3 = 1 + (int) (Math.random() * ((2 - 1) + 1));
-                    if (CouleurAleatoire3 == 1) {
-                        ListeJoueur.get(1).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(0).AffecterCouleurAuJoueur("Verte");
-                    } else {
-                        ListeJoueur.get(0).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(1).AffecterCouleurAuJoueur("Verte");
-                    }
-                }
-                if (CouleurAleatoire2 == 3) {
-                    ListeJoueur.get(0).AffecterCouleurAuJoueur("Noire");
-                    int CouleurAleatoire3 = 1 + (int) (Math.random() * ((2 - 1) + 1));
-                    if (CouleurAleatoire3 == 1) {
-                        ListeJoueur.get(2).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(1).AffecterCouleurAuJoueur("Verte");
-                    } else {
-                        ListeJoueur.get(1).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(2).AffecterCouleurAuJoueur("Verte");
-                    }
-                }
-            }
+            ListeJoueur.get(0).AffecterCouleurAuJoueur("Rouge");
+            jlb_J1_couleur.setForeground(new java.awt.Color(255, 51, 51));
+            ListeJoueur.get(1).AffecterCouleurAuJoueur("Bleue");
+            jlb_J2_couleur.setForeground(new java.awt.Color(51, 102, 255));
+            ListeJoueur.get(2).AffecterCouleurAuJoueur("Noire");
+            ListeJoueur.get(3).AffecterCouleurAuJoueur("Verte");
+            jlb_J4_couleur.setForeground(new java.awt.Color(51,153,0));
+            
             jlb_J1_couleur.setText(ListeJoueur.get(0).CouleurJoueur);
             jlb_J2_couleur.setText(ListeJoueur.get(1).CouleurJoueur);
             jlb_J3_couleur.setText(ListeJoueur.get(2).CouleurJoueur);
             jlb_J4_couleur.setText(ListeJoueur.get(3).CouleurJoueur);
         }
     }
-
     
 
     public void JoueurSuivant() {

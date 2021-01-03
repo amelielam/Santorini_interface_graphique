@@ -60,6 +60,15 @@ public class Cellule {
         }
     }
     
+public boolean SupprimerPion(){
+    //supprime le pion et renvoie vrai si la suppression s’est bien passée, ou faux autrement (ex : pas de pion présent)
+    if (PionCourantCellule==null){
+        return false;
+    }else{
+        PionCourantCellule=null;
+        return true;
+    }   
+}
 
 }
     
