@@ -104,7 +104,7 @@
         <Component class="javax.swing.JComboBox" name="jComboBox2">
           <Properties>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;Placer Pions&quot;, &quot;D&#xe9;placer un pion&quot;, &quot;Placer un bloc&quot;})" type="code"/>
+              <Connection code="new javax.swing.DefaultComboBoxModel&lt;&gt;(new String[] { &quot;Placer premier pion&quot;,&quot;Placer deuxi&#xe8;me pion&quot;, &quot;D&#xe9;placer un pion&quot;, &quot;Placer un bloc&quot;})" type="code"/>
             </Property>
           </Properties>
           <Events>

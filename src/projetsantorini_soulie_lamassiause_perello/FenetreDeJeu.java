@@ -43,14 +43,14 @@ public class FenetreDeJeu extends javax.swing.JFrame {
                 CellGraph.addActionListener(new java.awt.event.ActionListener() {
                 public void actionPerformed(java.awt.event.ActionEvent evt) {
                         Cellule c = CellGraph.CelluleAssociee;
-                        if (ChoixJeu().equals("Placer Pions")) {
-                            for (int numjoueur=0; numjoueur<NombreDeJoueurs();numjoueur++){
-                                CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion1);
-                                message.setText(JoueurCourantPartie.Nom + " cliquez sur une autre case pour placer votre deuxième un pion");
-                                CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion2);
-                                JoueurSuivant();
-                            }
-                        }  
+                        if (ChoixJeu().equals("Placer premier pion")) {
+                            CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion1);
+                        }
+                        if (ChoixJeu().equals("Placer deuxième pion")) {
+                            CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion2);
+                            JoueurSuivant();
+                            
+                        }
                         if (ChoixJeu().equals("Déplacer un pion")) {
                             
                         }
@@ -64,16 +64,8 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         }
     }
 
-    public void PlacerPions(CelluleGraphique CelluleGraphiq) {
-        int nbJoueurs = NombreDeJoueurs();
-        for (int numjoueur = 0; numjoueur < nbJoueurs; numjoueur++) {
-            CelluleGraphiq.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion1);
-            message.setText(JoueurCourantPartie.Nom + " cliquez sur une autre case pour placer votre deuxième pion");
-            CelluleGraphiq.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion2);
-            JoueurSuivant();
-        }
-    }
-
+    
+ 
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -145,7 +137,7 @@ public class FenetreDeJeu extends javax.swing.JFrame {
 
         jlb_NomJoueurCourant.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Placer Pions", "Déplacer un pion", "Placer un bloc"}));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Placer premier pion","Placer deuxième pion", "Déplacer un pion", "Placer un bloc"}));
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox2ActionPerformed(evt);
