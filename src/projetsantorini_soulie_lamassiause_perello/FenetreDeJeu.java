@@ -7,6 +7,8 @@ import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -24,6 +26,17 @@ public class FenetreDeJeu extends javax.swing.JFrame {
     Plateau PDJ = new Plateau();
     LinkedList<Bloc> BlocsDispo = new LinkedList<>();
     Bloc BlocCourantPartie;
+    int xlast;
+    int ylast;
+    boolean PlacementPion1_J1 = true;
+    boolean PlacementPion2_J1 = false;
+    boolean PlacementPion1_J2 = false;
+    boolean PlacementPion2_J2 = false;
+    boolean PlacementPion1_J3 = false;
+    boolean PlacementPion2_J3 = false;
+    boolean PlacementPion1_J4 = false;
+    boolean PlacementPion2_J4 = false;
+    boolean PersoSelectionne = false;
 
     /**
      * Creates new form FenetreDeJeu
@@ -34,38 +47,92 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         PlateauDeJeu.setVisible(false);
         InfoJoueurs.setVisible(false);
         InfoPartie.setVisible(false);
-        Menu_deroulant.setVisible(false);
 
         for (int i = 4; i >= 0; i--) {
             for (int j = 0; j < 5; j++) {
-                CelluleGraphique CellGraph = new CelluleGraphique(PDJ.Cases[i][j]);
-                
+                CelluleGraphique CellGraph = new CelluleGraphique(PDJ.Cases[i][j], i, j);
                 CellGraph.addActionListener(new java.awt.event.ActionListener() {
-                public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        Cellule c = CellGraph.CelluleAssociee;
-                        if (ChoixJeu().equals("Placer premier pion")) {
-                            CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion1);
+                    public void actionPerformed(java.awt.event.ActionEvent evt) {
+                        //message.setText("la case sélectionée est :["+i+","+j);
+                        PlacerPions(CellGraph);
+                        if (PersoSelectionne == false) {
+                            //phase de sélection de personnage qui se trouve sur la case [i,j]
+                            if (CellGraph.CelluleAssociee.PresencePion(JoueurCourantPartie.Pion1) == true || CellGraph.CelluleAssociee.PresencePion(JoueurCourantPartie.Pion2) == true) {
+                                //xlast=i;
+                                //ylast=j;
+                                PersoSelectionne = true;
+                            }
                         }
-                        if (ChoixJeu().equals("Placer deuxième pion")) {
-                            CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion2);
-                            JoueurSuivant();
-                            
+                        if (PersoSelectionne == true) {
+                            //phase de déplacement du personnage : on a cliqué sur la case de destination [i,j]
+                            PDJ.Cases[xlast][ylast].AffecterPion(JoueurCourantPartie.Pion1);
+                            PersoSelectionne = false;
                         }
-                        if (ChoixJeu().equals("Déplacer un pion")) {
-                            
-                        }
-                        if (ChoixJeu().equals("Placer un bloc")) {
-                            
-                        }
-                }
+
+                    }
                 });
                 PlateauDeJeu.add(CellGraph);
             }
         }
     }
 
-    
- 
+    public void PlacerPions(CelluleGraphique CellGraph) {
+        if (PlacementPion2_J4 == true) {
+            CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion2);
+            PlacementPion2_J4 = false;
+        }
+        if (PlacementPion1_J4 == true) {
+            CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion1);
+            message.setText(JoueurCourantPartie.Nom+" Placez votre 2ème pion");
+            PlacementPion2_J4 = true;
+            PlacementPion1_J4 = false;
+        }
+        if (PlacementPion2_J3 == true) {
+            CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion2);
+            if (NombreDeJoueurs()==4){
+                JoueurSuivant();
+                message.setText("Le prochain Joueur est: " + JoueurCourantPartie.Nom+"\n"+JoueurCourantPartie.Nom+" vous pouvez placer votre premier pion");
+                PlacementPion1_J4 = true;
+            }
+            PlacementPion2_J3 = false;
+        }
+        if (PlacementPion1_J3 == true) {
+            CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion1);
+            message.setText(JoueurCourantPartie.Nom+" Placez votre 2ème pion");
+            PlacementPion2_J3 = true;
+            PlacementPion1_J3 = false;
+        }
+        if (PlacementPion2_J2 == true) {
+            CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion2);
+            if (NombreDeJoueurs()==3){
+                JoueurSuivant();
+                message.setText("Le prochain Joueur est: " + JoueurCourantPartie.Nom+"\n"+JoueurCourantPartie.Nom+" vous pouvez placer votre premier pion");
+                PlacementPion1_J3 = true;
+            }
+            PlacementPion2_J2 = false;
+        }
+        if (PlacementPion1_J2 == true) {
+            CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion1);
+            message.setText(JoueurCourantPartie.Nom+" Placez votre 2ème pion");
+            PlacementPion2_J2 = true;
+            PlacementPion1_J2 = false;
+        }
+        if (PlacementPion2_J1 == true) {
+            CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion2);
+            JoueurSuivant();
+            message.setText("Le prochain Joueur est: " + JoueurCourantPartie.Nom+"\n"+JoueurCourantPartie.Nom+" vous pouvez placer votre premier pion");
+            PlacementPion1_J2 = true;
+            PlacementPion2_J1 = false;
+        }
+        if (PlacementPion1_J1 == true) {
+            CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion1);
+            message.setText(JoueurCourantPartie.Nom+" Placez votre 2ème pion");
+            PlacementPion2_J1 = true;
+            PlacementPion1_J1 = false;
+        }
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -75,11 +142,6 @@ public class FenetreDeJeu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        Menu_deroulant = new javax.swing.JPanel();
-        jLabel20 = new javax.swing.JLabel();
-        jlb_NomJoueurCourant = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<>();
         DebPartie = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
@@ -124,55 +186,9 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         message = new javax.swing.JTextArea();
         jToggleButton1 = new javax.swing.JToggleButton();
 
-        jButton1.setText("jButton1");
-
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 204, 204));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        Menu_deroulant.setBackground(new java.awt.Color(204, 255, 255));
-
-        jLabel20.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        jLabel20.setText("Que voulez-vous faire?");
-
-        jlb_NomJoueurCourant.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Placer premier pion","Placer deuxième pion", "Déplacer un pion", "Placer un bloc"}));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout Menu_deroulantLayout = new javax.swing.GroupLayout(Menu_deroulant);
-        Menu_deroulant.setLayout(Menu_deroulantLayout);
-        Menu_deroulantLayout.setHorizontalGroup(
-            Menu_deroulantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Menu_deroulantLayout.createSequentialGroup()
-                .addGroup(Menu_deroulantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(Menu_deroulantLayout.createSequentialGroup()
-                        .addGap(163, 163, 163)
-                        .addComponent(jlb_NomJoueurCourant, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(Menu_deroulantLayout.createSequentialGroup()
-                        .addGap(179, 179, 179)
-                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        Menu_deroulantLayout.setVerticalGroup(
-            Menu_deroulantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(Menu_deroulantLayout.createSequentialGroup()
-                .addGap(29, 29, 29)
-                .addGroup(Menu_deroulantLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel20)
-                    .addComponent(jlb_NomJoueurCourant, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jComboBox2, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        getContentPane().add(Menu_deroulant, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 540, 500, 120));
 
         DebPartie.setBackground(new java.awt.Color(153, 204, 255));
         DebPartie.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -241,6 +257,11 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         getContentPane().add(DebPartie, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 220, 420, 210));
 
         PlateauDeJeu.setBackground(new java.awt.Color(255, 255, 255));
+        PlateauDeJeu.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                PlateauDeJeuMouseClicked(evt);
+            }
+        });
         PlateauDeJeu.setLayout(new java.awt.GridLayout(5, 5));
         getContentPane().add(PlateauDeJeu, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 500, 500));
 
@@ -409,6 +430,34 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         //Nombre de joueurs: 
         int nbJoueurs = NombreDeJoueurs();
 
+        InscriptionDesJoueurs(nbJoueurs);
+
+        DeterminationDuPremierJoueur(nbJoueurs);
+
+        DeterminationDesCouleurs(nbJoueurs);
+
+        jlb_JoueurCourant.setText(JoueurCourantPartie.Nom);
+
+        //Création de la grille:
+        PDJ.viderPlateau();
+
+        //Création des blocs dispos:
+        for (int i = 0; i < 101; i++) {
+            Bloc NouvBloc = new Bloc();
+            BlocsDispo.add(NouvBloc);
+        }
+
+        //Création des pions:
+        for (int numjoueur = 0; numjoueur < nbJoueurs; numjoueur++) {
+            JoueurCourantPartie.Pion1 = new Pion(JoueurCourantPartie.CouleurJoueur);
+            JoueurCourantPartie.Pion2 = new Pion(JoueurCourantPartie.CouleurJoueur);
+            JoueurSuivant();
+        }
+        message.setText(JoueurCourantPartie.Nom+" Sélectionnez une case pour placer votre premier pion");
+
+    }
+
+    public void InscriptionDesJoueurs(int nbJoueurs) {
         //inscription des nb joueurs:
         String Joueur1 = NomJoueur1.getText();
         String Joueur2 = NomJoueur2.getText();
@@ -430,7 +479,9 @@ public class FenetreDeJeu extends javax.swing.JFrame {
                 jlb_J4_nom.setText(Joueur4);
             }
         }
+    }
 
+    public Joueur DeterminationDuPremierJoueur(int nbJoueurs) {
         //détermination du 1er joueur :
         //pour une partie à 2 joueurs:
         if (nbJoueurs == 2) {
@@ -470,23 +521,28 @@ public class FenetreDeJeu extends javax.swing.JFrame {
                 JoueurCourantPartie = ListeJoueur.get(3);
             }
         }
+        return JoueurCourantPartie;
+    }
 
-        jlb_JoueurCourant.setText(JoueurCourantPartie.Nom);
-        jlb_NomJoueurCourant.setText(JoueurCourantPartie.Nom);
-
+    public void DeterminationDesCouleurs(int nbJoueurs) {
         //Distribution des couleurs:
         //pour une partie à 2 joueurs:
         if (nbJoueurs == 2) {
             int CouleurAleatoire1 = 1 + (int) (Math.random() * ((2 - 1) + 1));
             if (CouleurAleatoire1 == 1) {
                 ListeJoueur.get(0).AffecterCouleurAuJoueur("Rouge");
+                jlb_J1_couleur.setForeground(new java.awt.Color(255, 51, 51));
                 ListeJoueur.get(1).AffecterCouleurAuJoueur("Bleue");
+                jlb_J2_couleur.setForeground(new java.awt.Color(51, 102, 255));
             } else {
-                ListeJoueur.get(0).AffecterCouleurAuJoueur("Rouge");
-                ListeJoueur.get(1).AffecterCouleurAuJoueur("Bleue");
+                ListeJoueur.get(1).AffecterCouleurAuJoueur("Rouge");
+                jlb_J2_couleur.setForeground(new java.awt.Color(255, 51, 51));
+                ListeJoueur.get(0).AffecterCouleurAuJoueur("Bleue");
+                jlb_J1_couleur.setForeground(new java.awt.Color(51, 102, 255));
+                
             }
-            jlb_J1_couleur.setText(J1.CouleurJoueur);
-            jlb_J2_couleur.setText(J2.CouleurJoueur);
+            jlb_J1_couleur.setText(ListeJoueur.get(0).CouleurJoueur);
+            jlb_J2_couleur.setText(ListeJoueur.get(1).CouleurJoueur);
         }
         //pour une partie à 3 joueurs:
         if (nbJoueurs == 3) {
@@ -498,7 +554,7 @@ public class FenetreDeJeu extends javax.swing.JFrame {
                     ListeJoueur.get(1).AffecterCouleurAuJoueur("Noire");
                     ListeJoueur.get(2).AffecterCouleurAuJoueur("Bleue");
                 } else {
-                    ListeJoueur.get(2).AffecterCouleurAuJoueur("Jaune");
+                    ListeJoueur.get(2).AffecterCouleurAuJoueur("Noire");
                     ListeJoueur.get(1).AffecterCouleurAuJoueur("Bleue");
                 }
             }
@@ -524,8 +580,8 @@ public class FenetreDeJeu extends javax.swing.JFrame {
                     ListeJoueur.get(1).AffecterCouleurAuJoueur("Bleue");
                 }
             }
-            jlb_J1_couleur.setText(J1.CouleurJoueur);
-            jlb_J2_couleur.setText(J2.CouleurJoueur);
+            jlb_J1_couleur.setText(ListeJoueur.get(0).CouleurJoueur);
+            jlb_J2_couleur.setText(ListeJoueur.get(1).CouleurJoueur);
             jlb_J3_couleur.setText(ListeJoueur.get(2).CouleurJoueur);
         }
         //pour une partie à 4 joueurs:
@@ -624,7 +680,7 @@ public class FenetreDeJeu extends javax.swing.JFrame {
                     int CouleurAleatoire3 = 1 + (int) (Math.random() * ((2 - 1) + 1));
                     if (CouleurAleatoire3 == 1) {
                         ListeJoueur.get(1).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(3).AffecterCouleurAuJoueur("vert");
+                        ListeJoueur.get(3).AffecterCouleurAuJoueur("Verte");
                     } else {
                         ListeJoueur.get(3).AffecterCouleurAuJoueur("Bleue");
                         ListeJoueur.get(1).AffecterCouleurAuJoueur("Verte");
@@ -635,7 +691,7 @@ public class FenetreDeJeu extends javax.swing.JFrame {
                     int CouleurAleatoire3 = 1 + (int) (Math.random() * ((2 - 1) + 1));
                     if (CouleurAleatoire3 == 1) {
                         ListeJoueur.get(0).AffecterCouleurAuJoueur("Bleue");
-                        ListeJoueur.get(1).AffecterCouleurAuJoueur("vert");
+                        ListeJoueur.get(1).AffecterCouleurAuJoueur("Verte");
                     } else {
                         ListeJoueur.get(0).AffecterCouleurAuJoueur("Bleue");
                         ListeJoueur.get(2).AffecterCouleurAuJoueur("Verte");
@@ -679,35 +735,15 @@ public class FenetreDeJeu extends javax.swing.JFrame {
                     }
                 }
             }
-            jlb_J1_couleur.setText(J1.CouleurJoueur);
-            jlb_J2_couleur.setText(J2.CouleurJoueur);
+            jlb_J1_couleur.setText(ListeJoueur.get(0).CouleurJoueur);
+            jlb_J2_couleur.setText(ListeJoueur.get(1).CouleurJoueur);
             jlb_J3_couleur.setText(ListeJoueur.get(2).CouleurJoueur);
             jlb_J4_couleur.setText(ListeJoueur.get(3).CouleurJoueur);
         }
-
-        //Création de la grille:
-        PDJ.viderPlateau();
-
-        //Création des blocs dispos:
-        for (int i = 0; i < 101; i++) {
-            Bloc NouvBloc = new Bloc();
-            BlocsDispo.add(NouvBloc);
-        }
-
-        //Création des pions:
-        for (int numjoueur = 0; numjoueur < nbJoueurs; numjoueur++) {
-            JoueurCourantPartie.Pion1 = new Pion(JoueurCourantPartie.CouleurJoueur);
-            JoueurCourantPartie.Pion2 = new Pion(JoueurCourantPartie.CouleurJoueur);
-        }
-        Menu_deroulant.setVisible(true);
-       
     }
 
-    public String ChoixJeu(){
-        String Choix = (String) jComboBox2.getSelectedItem();
-        return Choix;
-    }   
-        
+    
+
     public void JoueurSuivant() {
         String NbDeJoueurs = (String) jComboBox1.getSelectedItem();
         if (NbDeJoueurs.equals("2 joueurs")) {
@@ -720,25 +756,20 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         if (NbDeJoueurs.equals("3 joueurs")) {
             if (JoueurCourantPartie == ListeJoueur.get(0)) {
                 JoueurCourantPartie = ListeJoueur.get(1);
-            }
-            if (JoueurCourantPartie == ListeJoueur.get(1)) {
+            } else if (JoueurCourantPartie == ListeJoueur.get(1)) {
                 JoueurCourantPartie = ListeJoueur.get(2);
-            }
-            if (JoueurCourantPartie == ListeJoueur.get(2)) {
+            } else if (JoueurCourantPartie == ListeJoueur.get(2)) {
                 JoueurCourantPartie = ListeJoueur.get(0);
             }
         }
         if (NbDeJoueurs.equals("4 joueurs")) {
             if (JoueurCourantPartie == ListeJoueur.get(0)) {
                 JoueurCourantPartie = ListeJoueur.get(1);
-            }
-            if (JoueurCourantPartie == ListeJoueur.get(1)) {
+            } else if (JoueurCourantPartie == ListeJoueur.get(1)) {
                 JoueurCourantPartie = ListeJoueur.get(2);
-            }
-            if (JoueurCourantPartie == ListeJoueur.get(2)) {
+            } else if (JoueurCourantPartie == ListeJoueur.get(2)) {
                 JoueurCourantPartie = ListeJoueur.get(3);
-            }
-            if (JoueurCourantPartie == ListeJoueur.get(3)) {
+            } else if (JoueurCourantPartie == ListeJoueur.get(3)) {
                 JoueurCourantPartie = ListeJoueur.get(0);
             }
         }
@@ -781,35 +812,23 @@ public class FenetreDeJeu extends javax.swing.JFrame {
     private void jToggleButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jToggleButton1ActionPerformed
         String url = "https://www.cwowd.com/wp-content/uploads/2017/02/R%C3%A8gles-Santorini-V2.pdf";
 
-            Desktop dt = Desktop.getDesktop();
-            URI uri;
-            try {
-                uri = new URI(url);
-                dt.browse(uri.resolve(uri));
-            } catch (IOException ex) {
-                Logger.getLogger(FenetreDeJeu.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (URISyntaxException ex) {
+        Desktop dt = Desktop.getDesktop();
+        URI uri;
+        try {
+            uri = new URI(url);
+            dt.browse(uri.resolve(uri));
+        } catch (IOException ex) {
+            Logger.getLogger(FenetreDeJeu.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (URISyntaxException ex) {
             Logger.getLogger(FenetreDeJeu.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }//GEN-LAST:event_jToggleButton1ActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void PlateauDeJeuMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_PlateauDeJeuMouseClicked
         // TODO add your handling code here:
-        String Choix = (String) jComboBox2.getSelectedItem();
-        if (Choix.equals("Placer Pions")) {
-            message.setText(JoueurCourantPartie.Nom + " cliquez sur une case pour placer un pion");
-            
-        if (Choix.equals("Déplacer un pion")) {
-            message.setText(JoueurCourantPartie.Nom + " cliquez sur le pion que vous voulez déplacer");
-            }
-        if (Choix.equals("Placer un bloc")) {
-            message.setText(JoueurCourantPartie.Nom + " cliquez sur une case pour y placer un bloc");
-                
-        }
-        }
-    }//GEN-LAST:event_jComboBox2ActionPerformed
-    
+    }//GEN-LAST:event_PlateauDeJeuMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -855,16 +874,13 @@ public class FenetreDeJeu extends javax.swing.JFrame {
     private javax.swing.JPanel DebutDePartie;
     private javax.swing.JPanel InfoJoueurs;
     private javax.swing.JPanel InfoPartie;
-    private javax.swing.JPanel Menu_deroulant;
     private javax.swing.JTextField NomJoueur1;
     private javax.swing.JTextField NomJoueur2;
     private javax.swing.JTextField NomJoueur3;
     private javax.swing.JTextField NomJoueur4;
     private javax.swing.JPanel PlateauDeJeu;
     private javax.swing.JButton btn_start;
-    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -877,7 +893,6 @@ public class FenetreDeJeu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -897,7 +912,6 @@ public class FenetreDeJeu extends javax.swing.JFrame {
     private javax.swing.JLabel jlb_J4_couleur;
     private javax.swing.JLabel jlb_J4_nom;
     private javax.swing.JLabel jlb_JoueurCourant;
-    private javax.swing.JLabel jlb_NomJoueurCourant;
     private javax.swing.JTextArea message;
     // End of variables declaration//GEN-END:variables
 }

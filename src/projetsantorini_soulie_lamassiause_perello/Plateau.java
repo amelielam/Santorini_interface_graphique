@@ -296,8 +296,11 @@ public void  afficherPlateauSurConsole(){
                     System.out.print(Cases[i][j].PionCourantCellule.EtagePion+"J");
                 }
             }
-             
-        }
+            else if (Cases[i][j].PresenceBloc()!=true && Cases[i][j].PresencePion(Cases[i][j].PionCourantCellule)!=true){
+                System.out.print("\u2395 ");
+                
+                }
+       }
         System.out.println(" "+(i+1)); //afichage du numéro de ligne
     }
     for (int a=0;a<Cases[0].length;a++){ //affichage du numéro de colonne

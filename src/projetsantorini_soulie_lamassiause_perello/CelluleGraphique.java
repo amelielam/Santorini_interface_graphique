@@ -15,6 +15,8 @@ import javax.swing.JButton;
  */
 public class CelluleGraphique extends JButton {
     Cellule CelluleAssociee;
+    int coord_x;
+    int coord_y;
     ImageIcon img_vide = new javax.swing.ImageIcon(getClass().getResource("/images/case_vide.png"));
     
     ImageIcon img_dome = new javax.swing.ImageIcon(getClass().getResource("/images/dome.png"));
@@ -58,8 +60,10 @@ public class CelluleGraphique extends JButton {
     ImageIcon img_vert_perso2_et2 = new javax.swing.ImageIcon(getClass().getResource("/images/vert_perso2_et2.png"));
     ImageIcon img_vert_perso2_et3 = new javax.swing.ImageIcon(getClass().getResource("/images/vert_perso2_et3.png"));
     
-    public CelluleGraphique (Cellule UneCellule){
+    public CelluleGraphique (Cellule UneCellule, int  x,int  y){
         CelluleAssociee = UneCellule;
+        coord_x=x;
+        coord_y=y;
         
     }
     
@@ -175,7 +179,6 @@ public class CelluleGraphique extends JButton {
                      setIcon(img_bleu_perso1_et0);
                        
             }
+            }
     }
-    
-}
 }
