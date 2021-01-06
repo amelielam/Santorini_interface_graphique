@@ -70,25 +70,24 @@ public class CelluleGraphique extends JButton {
     @Override
     public void paintComponent (Graphics G){
         super.paintComponent(G);
-        if (CelluleAssociee.PresenceBloc()==true && CelluleAssociee.PresencePion(CelluleAssociee.PionCourantCellule)!=true){
+        if (CelluleAssociee.PresenceBloc()==true && CelluleAssociee.PionCourantCellule==null){
                 if (CelluleAssociee.BlocCellule.Etage==0){
                     setIcon(img_vide);
                 }
-                        
-                if (CelluleAssociee.BlocCellule.Etage==1){
+                else if (CelluleAssociee.BlocCellule.Etage==1){
                     setIcon(img_bloc_etage_1);
                 }
-                if (CelluleAssociee.BlocCellule.Etage==2){
+                else if (CelluleAssociee.BlocCellule.Etage==2){
                     setIcon(img_bloc_etage_2);
                 }
-                if (CelluleAssociee.BlocCellule.Etage==3){
+                else if (CelluleAssociee.BlocCellule.Etage==3){
                     setIcon(img_bloc_etage_3);
                 }
-                if (CelluleAssociee.BlocCellule.Etage==4){
+                else if (CelluleAssociee.BlocCellule.Etage==4){
                     setIcon(img_dome);
                 }
-            }
-            if (CelluleAssociee.PresencePion(CelluleAssociee.PionCourantCellule)==true && CelluleAssociee.PresenceBloc()==true) {    
+        }
+        else if (CelluleAssociee.PresencePion(CelluleAssociee.PionCourantCellule)==true && CelluleAssociee.PresenceBloc()==true) {    
                 if (CelluleAssociee.BlocCellule.Etage==0){
                     if ("Rouge".equals(CelluleAssociee.PionCourantCellule.CouleurPion)) {
                         setIcon(img_rouge_perso1_et0);
@@ -105,7 +104,6 @@ public class CelluleGraphique extends JButton {
                         setIcon(img_bleu_perso1_et0);
                         }
                     }
-                }
                 if (CelluleAssociee.BlocCellule.Etage==1){
                     if ("Rouge".equals(CelluleAssociee.PionCourantCellule.CouleurPion)) {    
                         setIcon(img_rouge_perso1_et1);
@@ -161,24 +159,21 @@ public class CelluleGraphique extends JButton {
                 if (CelluleAssociee.BlocCellule.Etage==4){
                     setIcon(img_dome);
                 }
-            
-            else if (CelluleAssociee.PresencePion(CelluleAssociee.PionCourantCellule)==true && CelluleAssociee.PresenceBloc()==false){
-                if ("Rouge".equals(CelluleAssociee.PionCourantCellule.CouleurPion)) {    
-                        setIcon(img_rouge_perso1_et0);
-                        
-                }
-                if ("Noire".equals(CelluleAssociee.PionCourantCellule.CouleurPion)) {    
-                    setIcon(img_noir_perso1_et0);
-                        
-                }
-                if ("Verte".equals(CelluleAssociee.PionCourantCellule.CouleurPion)) {    
-                       setIcon(img_vert_perso1_et0);
-                       
-                }
-                if ("Bleue".equals(CelluleAssociee.PionCourantCellule.CouleurPion)) {    
-                     setIcon(img_bleu_perso1_et0);
-                       
+        }
+        else if (CelluleAssociee.PresencePion(CelluleAssociee.PionCourantCellule)==true && CelluleAssociee.PresenceBloc()==false){
+            if ("Rouge".equals(CelluleAssociee.PionCourantCellule.CouleurPion)) {    
+                    setIcon(img_rouge_perso1_et0);
             }
+            if ("Noire".equals(CelluleAssociee.PionCourantCellule.CouleurPion)) {    
+                setIcon(img_noir_perso1_et0);
             }
+            if ("Verte".equals(CelluleAssociee.PionCourantCellule.CouleurPion)) {    
+                setIcon(img_vert_perso1_et0);
+            }
+            if ("Bleue".equals(CelluleAssociee.PionCourantCellule.CouleurPion)) {    
+                setIcon(img_bleu_perso1_et0);
+            }
+        }
     }
+    
 }

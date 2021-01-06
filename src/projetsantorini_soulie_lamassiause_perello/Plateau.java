@@ -207,8 +207,7 @@ public class Plateau {
             return true;
         }
     }
-    
-    
+     
     public boolean etrePerdantePourJoueur(Pion PionActuel){
         boolean test=false;
         for(int i=0; i<Cases.length;i++){

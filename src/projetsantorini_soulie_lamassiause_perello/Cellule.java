@@ -42,6 +42,15 @@ public class Cellule {
         }
     }
     
+    public boolean CaseSansPion (){
+        if (PionCourantCellule == null) {
+            return true ;
+        }
+        else {
+            return false ;
+        }
+    }
+    
     public boolean PresenceBloc (){
         if (BlocCellule!= null) {
             return true ;

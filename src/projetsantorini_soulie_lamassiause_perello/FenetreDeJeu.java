@@ -39,6 +39,9 @@ public class FenetreDeJeu extends javax.swing.JFrame {
     boolean PersoSelectionne = false;
     boolean Deplacement = false;
     boolean Construction = false;
+    boolean DeuxiemeClic = false;
+    boolean ClicDeplacement = false;
+    boolean ReSelectionDeplacement = false;
 
     /**
      * Creates new form FenetreDeJeu
@@ -49,23 +52,38 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         PlateauDeJeu.setVisible(false);
         InfoJoueurs.setVisible(false);
         InfoPartie.setVisible(false);
-
         for (int i = 4; i >= 0; i--) {
             for (int j = 0; j < 5; j++) {
                 CelluleGraphique CellGraph = new CelluleGraphique(PDJ.Cases[i][j], i, j);
+                //while ((PDJ.etreGagnantePourJoueur(ListeJoueur.get(0).Pion1) != true) && (PDJ.etreGagnantePourJoueur(ListeJoueur.get(0).Pion2) != true) && (PDJ.etreGagnantePourJoueur(ListeJoueur.get(1).Pion1) != true) && (PDJ.etreGagnantePourJoueur(ListeJoueur.get(1).Pion2) != true) && (PDJ.etreGagnantePourJoueur(ListeJoueur.get(2).Pion1) != true) && (PDJ.etreGagnantePourJoueur(ListeJoueur.get(2).Pion2) != true) && (PDJ.etreGagnantePourJoueur(ListeJoueur.get(3).Pion1) != true) && (PDJ.etreGagnantePourJoueur(ListeJoueur.get(3).Pion2) != true)) {// && (PDJ.etrePerdantePourJoueur(ListeJoueur[0].Pion1)!=true) && (PDJ.etrePerdantePourJoueur(ListeJoueur[0].Pion2)!=true) && (PDJ.etrePerdantePourJoueur(ListeJoueur[1].Pion1)!=true) && (PDJ.etrePerdantePourJoueur(ListeJoueur[1].Pion2)!=true)){
                 CellGraph.addActionListener(new java.awt.event.ActionListener() {
                     public void actionPerformed(java.awt.event.ActionEvent evt) {
-                        if (Construction==true){
-                            ConstruireBloc(CellGraph,JoueurCourantPartie.Pion1,CellGraph.coord_x,CellGraph.coord_y);
+                        if (DeuxiemeClic == true) {
+                            Deplacement = false;
+                            PersoSelectionne = false;
+                            DeuxiemeClic = false;
                         }
-                        if (Deplacement==true){
-                            DeplacerPerso(CellGraph,CellGraph.coord_x,CellGraph.coord_y);
+                        if (ClicDeplacement == true) {
+                            Deplacement = true;
+                            Construction = false;
+                            ClicDeplacement = false;
+                        }
+                        if (Construction == true) {
+                            ConstruireBloc(CellGraph, JoueurCourantPartie.Pion1, CellGraph.coord_x, CellGraph.coord_y);
+                            JoueurSuivant();
+                            message.setText("C'est à " + JoueurCourantPartie.Nom + " de jouer.\nSélectionnez un pion à déplacer.");
+                            ClicDeplacement = true;
+                        }
+                        if (Deplacement == true) {
+                            DeplacerPerso(CellGraph, CellGraph.coord_x, CellGraph.coord_y);
+
                         }
                         PlacerPions(CellGraph);
-                        
+
                     }
                 });
                 PlateauDeJeu.add(CellGraph);
+                //}
             }
         }
     }
@@ -75,7 +93,7 @@ public class FenetreDeJeu extends javax.swing.JFrame {
             CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion2);
             JoueurSuivant();
             message.setText(JoueurCourantPartie.Nom + " quel pion souhaitez vous déplacer?");
-            Deplacement=true;
+            Deplacement = true;
             PlacementPion2_J4 = false;
         }
         if (PlacementPion1_J4 == true) {
@@ -90,10 +108,10 @@ public class FenetreDeJeu extends javax.swing.JFrame {
                 JoueurSuivant();
                 message.setText("C'est au tour de " + JoueurCourantPartie.Nom + "\n\n" + JoueurCourantPartie.Nom + " vous pouvez placer votre premier pion");
                 PlacementPion1_J4 = true;
-            }else{
+            } else {
                 JoueurSuivant();
                 message.setText(JoueurCourantPartie.Nom + " quel pion souhaitez vous déplacer?");
-                Deplacement=true;
+                Deplacement = true;
             }
             PlacementPion2_J3 = false;
         }
@@ -105,14 +123,14 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         }
         if (PlacementPion2_J2 == true) {
             CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion2);
-            if (NombreDeJoueurs() == 3) {
+            if (NombreDeJoueurs() == 3 || NombreDeJoueurs() == 4) {
                 JoueurSuivant();
                 message.setText("C'est au tour de " + JoueurCourantPartie.Nom + "\n\n" + JoueurCourantPartie.Nom + " vous pouvez placer votre premier pion");
                 PlacementPion1_J3 = true;
-            }else{
+            } else {
                 JoueurSuivant();
                 message.setText(JoueurCourantPartie.Nom + " quel pion souhaitez vous déplacer?");
-                Deplacement=true;
+                Deplacement = true;
             }
             PlacementPion2_J2 = false;
         }
@@ -139,28 +157,47 @@ public class FenetreDeJeu extends javax.swing.JFrame {
     }
 
     public void DeplacerPerso(CelluleGraphique CellGraph, int i, int j) {
+        //si pion sur case sélectionnée est bien le sien alors peut sinon non
         if (PersoSelectionne == true) {
             //phase de déplacement du personnage : on a cliqué sur la case de destination [i,j]
-            PDJ.DeplacerPion(JoueurCourantPartie.Pion1,i,j);
-            PDJ.Cases[xlast][ylast].SupprimerPion();//supprimer le pion qui était à la position d'avant
-            PlateauDeJeu.repaint();
-            PersoSelectionne = false;
+            if (ReSelectionDeplacement=true){
+                PersoSelectionne=false;
+                ReSelectionDeplacement=false;
+            }
+            if (PDJ.Cases[i][j].CaseSansPion()==true) {
+                PDJ.DeplacerPion(JoueurCourantPartie.Pion1, i, j);
+                PDJ.Cases[xlast][ylast].SupprimerPion();//supprimer le pion qui était à la position d'avant
+                PlateauDeJeu.repaint();
+                message.setText(JoueurCourantPartie.Nom + " sélectionnez une case pour placer un bloc");
+                DeuxiemeClic = true;
+                Construction = true;
+            } else {
+                message.setText("Cette case est déja occupée par un autre pion, il faut en choisir une autre");
+                ReSelectionDeplacement=true;
+            }
         }
         if (PersoSelectionne == false) {
             //phase de sélection de personnage qui se trouve sur la case [i,j]
             if (CellGraph.CelluleAssociee.PresencePion(JoueurCourantPartie.Pion1) == true || CellGraph.CelluleAssociee.PresencePion(JoueurCourantPartie.Pion2) == true) {
-                xlast=CellGraph.coord_x;
-                ylast=CellGraph.coord_y;
+                xlast = CellGraph.coord_x;
+                ylast = CellGraph.coord_y;
+                message.setText("vous voulez déplacer le pion situé en [" + xlast + "," + ylast + "]\nOù voulez-vous le placer?");
                 PersoSelectionne = true;
+
             }
         }
-        Construction = true;
-        
+
     }
 
-    public void ConstruireBloc(CelluleGraphique CellGraph,Pion PionAdjacent, int i, int j){
-        PDJ.AjouterBlocSurCellule(BlocCourantPartie, PionAdjacent, i, j);
+    public void ConstruireBloc(CelluleGraphique CellGraph, Pion PionAdjacent, int i, int j) {
+        //phase de sélection de de la case où on veut placer le bloc
+        //phase de construction du bloc : on a cliqué sur la case de destination
+        PDJ.AjouterBlocSurCellule(BlocsDispo.getLast(), PionAdjacent, i, j);
+        BlocsDispo.removeLast();
+        PlateauDeJeu.repaint();
+
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -220,69 +257,36 @@ public class FenetreDeJeu extends javax.swing.JFrame {
 
         DebPartie.setBackground(new java.awt.Color(153, 204, 255));
         DebPartie.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
+        DebPartie.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel10.setFont(new java.awt.Font("Tempus Sans ITC", 1, 24)); // NOI18N
+        jLabel10.setFont(new java.awt.Font("Tempus Sans ITC", 1, 23)); // NOI18N
         jLabel10.setForeground(new java.awt.Color(255, 255, 255));
         jLabel10.setText(" Santorini !");
+        DebPartie.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 80, -1, -1));
 
+        jComboBox1.setBackground(new java.awt.Color(51, 102, 255));
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "2 joueurs", "3 joueurs" , "4 joueurs"}));
         jComboBox1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox1ActionPerformed(evt);
             }
         });
+        DebPartie.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 180, 110, 35));
 
+        jLabel11.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel11.setText("Sélectionnez le nombre de joueurs :");
+        DebPartie.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 190, 225, -1));
 
-        jLabel18.setFont(new java.awt.Font("Yu Gothic Light", 1, 18)); // NOI18N
+        jLabel18.setFont(new java.awt.Font("Harrington", 1, 24)); // NOI18N
         jLabel18.setText("Bienvenue dans le jeu ");
+        DebPartie.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 80, -1, -1));
 
         jLabel19.setFont(new java.awt.Font("Tempus Sans ITC", 1, 24)); // NOI18N
         jLabel19.setForeground(new java.awt.Color(0, 102, 204));
         jLabel19.setText(" Santorini !");
+        DebPartie.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 80, -1, -1));
 
-        javax.swing.GroupLayout DebPartieLayout = new javax.swing.GroupLayout(DebPartie);
-        DebPartie.setLayout(DebPartieLayout);
-        DebPartieLayout.setHorizontalGroup(
-            DebPartieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DebPartieLayout.createSequentialGroup()
-                .addGap(37, 37, 37)
-                .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
-                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(116, 116, 116))
-            .addGroup(DebPartieLayout.createSequentialGroup()
-                .addGap(65, 65, 65)
-                .addComponent(jLabel18)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel10)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(DebPartieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, DebPartieLayout.createSequentialGroup()
-                    .addContainerGap(257, Short.MAX_VALUE)
-                    .addComponent(jLabel19)
-                    .addGap(84, 84, 84)))
-        );
-        DebPartieLayout.setVerticalGroup(
-            DebPartieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(DebPartieLayout.createSequentialGroup()
-                .addGap(44, 44, 44)
-                .addGroup(DebPartieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel10)
-                    .addComponent(jLabel18))
-                .addGap(36, 36, 36)
-                .addGroup(DebPartieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11))
-                .addContainerGap(54, Short.MAX_VALUE))
-            .addGroup(DebPartieLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(DebPartieLayout.createSequentialGroup()
-                    .addGap(46, 46, 46)
-                    .addComponent(jLabel19)
-                    .addContainerGap(127, Short.MAX_VALUE)))
-        );
-
-        getContentPane().add(DebPartie, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 220, 420, 210));
+        getContentPane().add(DebPartie, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 760, 380));
 
         PlateauDeJeu.setBackground(new java.awt.Color(255, 255, 255));
         PlateauDeJeu.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -291,9 +295,9 @@ public class FenetreDeJeu extends javax.swing.JFrame {
             }
         });
         PlateauDeJeu.setLayout(new java.awt.GridLayout(5, 5));
-        getContentPane().add(PlateauDeJeu, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 20, 500, 500));
+        getContentPane().add(PlateauDeJeu, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, 500, 500));
 
-        DebutDePartie.setBackground(new java.awt.Color(204, 204, 255));
+        DebutDePartie.setBackground(new java.awt.Color(166, 227, 156));
         DebutDePartie.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setText("Nom du joueur 1 : ");
@@ -310,13 +314,16 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         DebutDePartie.add(NomJoueur1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 20, 120, -1));
         DebutDePartie.add(NomJoueur2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 50, 120, -1));
 
+        btn_start.setBackground(new java.awt.Color(255, 255, 255));
+        btn_start.setFont(new java.awt.Font("Harrington", 1, 12)); // NOI18N
+        btn_start.setForeground(new java.awt.Color(7, 127, 7));
         btn_start.setText("Démarrer partie");
         btn_start.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_startActionPerformed(evt);
             }
         });
-        DebutDePartie.add(btn_start, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 50, 120, 40));
+        DebutDePartie.add(btn_start, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 50, 130, 40));
 
         jLabel12.setText("Nom du joueur 3 : ");
         DebutDePartie.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 80, -1, -1));
@@ -334,7 +341,7 @@ public class FenetreDeJeu extends javax.swing.JFrame {
 
         getContentPane().add(DebutDePartie, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 20, 430, 150));
 
-        InfoJoueurs.setBackground(new java.awt.Color(255, 255, 204));
+        InfoJoueurs.setBackground(new java.awt.Color(162, 200, 181));
         InfoJoueurs.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel4.setText("Joueur  1 :");
@@ -362,7 +369,7 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         jLabel7.setText("Joueur  2 :");
         InfoJoueurs.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 40, -1, -1));
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel8.setFont(new java.awt.Font("Harrington", 0, 14)); // NOI18N
         jLabel8.setText("Infos Joueurs:");
         InfoJoueurs.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
 
@@ -390,20 +397,21 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         jLabel17.setText("Joueur  4 :");
         InfoJoueurs.add(jLabel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 120, -1, -1));
 
-        getContentPane().add(InfoJoueurs, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 190, 430, 190));
+        getContentPane().add(InfoJoueurs, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 400, 430, 190));
 
-        InfoPartie.setBackground(new java.awt.Color(255, 204, 255));
+        InfoPartie.setBackground(new java.awt.Color(101, 174, 120));
         InfoPartie.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Harrington", 0, 18)); // NOI18N
         jLabel3.setText("Infos Partie :");
         InfoPartie.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
 
+        jlb_JoueurCourant.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jlb_JoueurCourant.setText("nomJoueurCourant");
-        InfoPartie.add(jlb_JoueurCourant, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 40, -1, -1));
+        InfoPartie.add(jlb_JoueurCourant, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 40, -1, -1));
 
         jLabel9.setText("Joueur  Courant :");
-        InfoPartie.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, -1, -1));
+        InfoPartie.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 40, -1, -1));
 
         message.setColumns(20);
         message.setRows(5);
@@ -411,18 +419,18 @@ public class FenetreDeJeu extends javax.swing.JFrame {
 
         InfoPartie.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 370, -1));
 
-        getContentPane().add(InfoPartie, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 400, 430, 180));
+        getContentPane().add(InfoPartie, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 200, 430, 180));
 
-        jToggleButton1.setBackground(new java.awt.Color(0, 153, 153));
-        jToggleButton1.setText("Règles du Jeu");
+        jToggleButton1.setBackground(new java.awt.Color(153, 204, 255));
+        jToggleButton1.setText("Règles du Jeu (Les parties se jouent sans les dieux et héros)");
         jToggleButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jToggleButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 600, -1, -1));
+        getContentPane().add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 340, 40));
 
-        setBounds(0, 0, 1059, 712);
+        setBounds(0, 0, 1059, 662);
     }// </editor-fold>//GEN-END:initComponents
 
     private void NomJoueur1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NomJoueur1ActionPerformed
@@ -481,7 +489,7 @@ public class FenetreDeJeu extends javax.swing.JFrame {
             JoueurCourantPartie.Pion2 = new Pion(JoueurCourantPartie.CouleurJoueur);
             JoueurSuivant();
         }
-        message.setText(JoueurCourantPartie.Nom + " vous êtes le premier joueur à jouer. \n\n Sélectionnez une case pour placer votre premier pion");
+        message.setText("DEBUT DE PARTIE : Placement des pions\n\n" + JoueurCourantPartie.Nom + " vous êtes le premier joueur à jouer. \n\nSélectionnez une case pour placer votre premier pion");
 
     }
 
@@ -629,15 +637,14 @@ public class FenetreDeJeu extends javax.swing.JFrame {
             jlb_J2_couleur.setForeground(new java.awt.Color(51, 102, 255));
             ListeJoueur.get(2).AffecterCouleurAuJoueur("Noire");
             ListeJoueur.get(3).AffecterCouleurAuJoueur("Verte");
-            jlb_J4_couleur.setForeground(new java.awt.Color(51,153,0));
-            
+            jlb_J4_couleur.setForeground(new java.awt.Color(51, 153, 0));
+
             jlb_J1_couleur.setText(ListeJoueur.get(0).CouleurJoueur);
             jlb_J2_couleur.setText(ListeJoueur.get(1).CouleurJoueur);
             jlb_J3_couleur.setText(ListeJoueur.get(2).CouleurJoueur);
             jlb_J4_couleur.setText(ListeJoueur.get(3).CouleurJoueur);
         }
     }
-    
 
     public void JoueurSuivant() {
         String NbDeJoueurs = (String) jComboBox1.getSelectedItem();
