@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package projetsantorini_soulie_lamassiause_perello;
+package projetsantorini_soulie_lamassiaude_perello;
 
 /**
  *
@@ -436,6 +436,12 @@ public void  afficherPlateauSurConsole(){
                     if ("jaune".equals(Cases[i][j].PionCourantCellule.CouleurPion)) {    
                         System.out.print(Cases[i][j].PionCourantCellule.EtagePion+"J");
                     }
+                    if ("vert".equals(Cases[i][j].PionCourantCellule.CouleurPion)) {    
+                        System.out.print(Cases[i][j].PionCourantCellule.EtagePion+"V");
+                    }
+                    if ("bleue".equals(Cases[i][j].PionCourantCellule.CouleurPion)) {    
+                        System.out.print(Cases[i][j].PionCourantCellule.EtagePion+"B");
+                    }
                 }
                 if (Cases[i][j].BlocCellule.Etage==1){
                     if ("rouge".equals(Cases[i][j].PionCourantCellule.CouleurPion)) {    
@@ -443,6 +449,12 @@ public void  afficherPlateauSurConsole(){
                     }
                     if ("jaune".equals(Cases[i][j].PionCourantCellule.CouleurPion)) {    
                         System.out.print("\u058D"+Cases[i][j].PionCourantCellule.EtagePion+"J");
+                    }
+                    if ("vert".equals(Cases[i][j].PionCourantCellule.CouleurPion)) {    
+                        System.out.print("\u058D"+Cases[i][j].PionCourantCellule.EtagePion+"V");
+                    }
+                    if ("bleue".equals(Cases[i][j].PionCourantCellule.CouleurPion)) {    
+                        System.out.print("\u058D"+Cases[i][j].PionCourantCellule.EtagePion+"B");
                     }
                 }
                 if (Cases[i][j].BlocCellule.Etage==2){
@@ -452,6 +464,12 @@ public void  afficherPlateauSurConsole(){
                     if ("jaune".equals(Cases[i][j].PionCourantCellule.CouleurPion)) {    
                         System.out.print("\u058D"+Cases[i][j].PionCourantCellule.EtagePion+"J");
                     }
+                    if ("vert".equals(Cases[i][j].PionCourantCellule.CouleurPion)) {    
+                        System.out.print("\u058D"+Cases[i][j].PionCourantCellule.EtagePion+"V");
+                    }
+                    if ("bleue".equals(Cases[i][j].PionCourantCellule.CouleurPion)) {    
+                        System.out.print("\u058D"+Cases[i][j].PionCourantCellule.EtagePion+"B");
+                    }
                 }
                 if (Cases[i][j].BlocCellule.Etage==3){
                     if ("rouge".equals(Cases[i][j].PionCourantCellule.CouleurPion)) {    
@@ -459,6 +477,12 @@ public void  afficherPlateauSurConsole(){
                     }
                     if ("jaune".equals(Cases[i][j].PionCourantCellule.CouleurPion)) {    
                         System.out.print("\u058D"+Cases[i][j].PionCourantCellule.EtagePion+"J");
+                    }
+                    if ("vert".equals(Cases[i][j].PionCourantCellule.CouleurPion)) {    
+                        System.out.print("\u058D"+Cases[i][j].PionCourantCellule.EtagePion+"V");
+                    }
+                    if ("bleue".equals(Cases[i][j].PionCourantCellule.CouleurPion)) {    
+                        System.out.print("\u058D"+Cases[i][j].PionCourantCellule.EtagePion+"B");
                     }
                 }
                 if (Cases[i][j].BlocCellule.Etage==4){
@@ -472,12 +496,17 @@ public void  afficherPlateauSurConsole(){
                 if ("jaune".equals(Cases[i][j].PionCourantCellule.CouleurPion)) {    
                     System.out.print(Cases[i][j].PionCourantCellule.EtagePion+"J");
                 }
-            }
-            else if (Cases[i][j].PresenceBloc()!=true && Cases[i][j].PresencePion(Cases[i][j].PionCourantCellule)!=true){
-                System.out.print("\u2395 ");
-                
+                if ("vert".equals(Cases[i][j].PionCourantCellule.CouleurPion)) {    
+                        System.out.print(Cases[i][j].PionCourantCellule.EtagePion+"V");
                 }
-       }
+                if ("bleue".equals(Cases[i][j].PionCourantCellule.CouleurPion)) {    
+                    System.out.print(Cases[i][j].PionCourantCellule.EtagePion+"B");
+                }
+            }
+            else if (Cases[i][j].PresenceBloc()!=true && Cases[i][j].PionCourantCellule==null){
+                System.out.print("\u2395 ");
+            }
+        }
         System.out.println(" "+(i+1)); //afichage du numéro de ligne
     }
     for (int a=0;a<Cases[0].length;a++){ //affichage du numéro de colonne

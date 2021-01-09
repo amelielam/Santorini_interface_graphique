@@ -1,4 +1,4 @@
-package projetsantorini_soulie_lamassiause_perello;
+package projetsantorini_soulie_lamassiaude_perello;
 
 import java.awt.Desktop;
 import java.io.IOException;
@@ -83,8 +83,10 @@ public class FenetreDeJeu extends javax.swing.JFrame {
                             if (PionSelectionne.EtagePion==3){
                                 Construction=false;
                                 JoueurGagnant.setText(JoueurCourantPartie.Nom);
-                                PlateauDeJeu.removeAll();
+                                PlateauDeJeu.setVisible(false);
+                                btn_start.setEnabled(true);
                                 FinDePartie.setVisible(true);
+                                
                             }
 
                         }
@@ -243,26 +245,26 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         //phase de sélection de de la case où on veut placer le bloc
         //phase de construction du bloc : on a cliqué sur la case de destination
         if (CellGraph.CelluleAssociee.BlocCellule.Etage==0){
-            if (PDJ.AjouterBlocSurCellule(CellGraph.CelluleAssociee.BlocCellule, PionAdjacent, i, j)==false){
+            if (PDJ.AjouterBlocSurCellule(BlocsDispo.getLast(), PionAdjacent, i, j)==false){
                 message.setText("Vous ne pouvez pas placer de bloc ici");
             }else{
-                PDJ.AjouterBlocSurCellule(BlocsDispo.getLast(),PionAdjacent , i, j);
                 BlocsDispo.removeLast();
                 JoueurSuivant();
                 message.setText("C'est à " + JoueurCourantPartie.Nom + " de jouer.\nSélectionnez un pion à déplacer.");
                 ClicDeplacement = true;
+                PlateauDeJeu.repaint();
             }
         }else{ 
             if (PDJ.AjouterBlocSurCellule(CellGraph.CelluleAssociee.BlocCellule, PionAdjacent, i, j)==false){
                 message.setText("Vous ne pouvez pas placer de bloc ici");
             }else{
-                PDJ.AjouterBlocSurCellule(BlocsDispo.getLast(),PionAdjacent , i, j);
                 JoueurSuivant();
                 message.setText("C'est à " + JoueurCourantPartie.Nom + " de jouer.\nSélectionnez un pion à déplacer.");
                 ClicDeplacement = true;
+                PlateauDeJeu.repaint();
             }
         }
-        PlateauDeJeu.repaint();
+        
         
 
     }
@@ -280,7 +282,7 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         JoueurGagnant = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        RestartButton = new javax.swing.JButton();
         DebPartie = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
@@ -330,6 +332,7 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         FinDePartie.setBackground(new java.awt.Color(51, 102, 255));
+        FinDePartie.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         FinDePartie.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel20.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -337,20 +340,19 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         FinDePartie.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 80, -1, -1));
 
         JoueurGagnant.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        JoueurGagnant.setText("jLabel21");
-        FinDePartie.add(JoueurGagnant, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 80, -1, -1));
+        FinDePartie.add(JoueurGagnant, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 80, 80, 20));
 
         jLabel21.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         jLabel21.setText("Bravo");
         FinDePartie.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 80, -1, -1));
 
-        jButton1.setText("Rejouer");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        RestartButton.setText("Rejouer");
+        RestartButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                RestartButtonActionPerformed(evt);
             }
         });
-        FinDePartie.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 170, 100, 30));
+        FinDePartie.add(RestartButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 170, 100, 30));
 
         getContentPane().add(FinDePartie, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 650, 240));
 
@@ -385,7 +387,7 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         jLabel19.setText(" Santorini !");
         DebPartie.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 80, -1, -1));
 
-        getContentPane().add(DebPartie, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 760, 380));
+        getContentPane().add(DebPartie, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 110, 720, 380));
 
         PlateauDeJeu.setBackground(new java.awt.Color(255, 255, 255));
         PlateauDeJeu.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -527,7 +529,7 @@ public class FenetreDeJeu extends javax.swing.JFrame {
                 jToggleButton1ActionPerformed(evt);
             }
         });
-        getContentPane().add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 20, 340, 40));
+        getContentPane().add(jToggleButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 20, 430, 40));
 
         setBounds(0, 0, 1059, 662);
     }// </editor-fold>//GEN-END:initComponents
@@ -742,8 +744,10 @@ public class FenetreDeJeu extends javax.swing.JFrame {
             jlb_J2_couleur.setText(ListeJoueur.get(1).CouleurJoueur);
             jlb_J3_couleur.setText(ListeJoueur.get(2).CouleurJoueur);
             jlb_J4_couleur.setText(ListeJoueur.get(3).CouleurJoueur);
-        }
+     
     }
+        }
+    
 
     public void JoueurSuivant() {
         String NbDeJoueurs = (String) jComboBox1.getSelectedItem();
@@ -830,17 +834,15 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_PlateauDeJeuMouseClicked
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void RestartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RestartButtonActionPerformed
         // TODO add your handling code here:
-        DebutDePartie.setVisible(false);
-        PlateauDeJeu.setVisible(false);
-        InfoJoueurs.setVisible(false);
-        InfoPartie.setVisible(false);
-        FinDePartie.setVisible(false);
-        DebPartie.setVisible(true);
-        FinDePartie.setVisible(false);
-    }//GEN-LAST:event_jButton1ActionPerformed
+        restart();
+    }//GEN-LAST:event_RestartButtonActionPerformed
 
+    public void restart() {
+        new FenetreDeJeu().setVisible(true);
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -893,8 +895,8 @@ public class FenetreDeJeu extends javax.swing.JFrame {
     private javax.swing.JTextField NomJoueur3;
     private javax.swing.JTextField NomJoueur4;
     private javax.swing.JPanel PlateauDeJeu;
+    private javax.swing.JButton RestartButton;
     private javax.swing.JButton btn_start;
-    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;

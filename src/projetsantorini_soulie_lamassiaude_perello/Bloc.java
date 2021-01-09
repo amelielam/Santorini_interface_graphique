@@ -3,18 +3,35 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package projetsantorini_soulie_lamassiause_perello;
+package projetsantorini_soulie_lamassiaude_perello;
 
 /**
  *
  * @author Baptiste Soulié
  */
-public class Dieu {
-    String Role ;
+public class Bloc {
+    int Etage ;
     
-    public Dieu (String DuRole){
-        Role = DuRole ;
+    public Bloc () {
+        Etage = 0 ;
+        
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     

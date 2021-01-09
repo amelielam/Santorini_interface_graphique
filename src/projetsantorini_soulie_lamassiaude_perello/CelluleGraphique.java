@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package projetsantorini_soulie_lamassiause_perello;
+package projetsantorini_soulie_lamassiaude_perello;
 
 import java.awt.Graphics;
 import javax.swing.ImageIcon;
