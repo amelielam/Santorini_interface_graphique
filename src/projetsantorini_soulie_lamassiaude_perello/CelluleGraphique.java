@@ -28,37 +28,21 @@ public class CelluleGraphique extends JButton {
     ImageIcon img_bleu_perso1_et1 = new javax.swing.ImageIcon(getClass().getResource("/images/bleu_perso1_et1.png"));
     ImageIcon img_bleu_perso1_et2 = new javax.swing.ImageIcon(getClass().getResource("/images/bleu_perso1_et2.png"));
     ImageIcon img_bleu_perso1_et3 = new javax.swing.ImageIcon(getClass().getResource("/images/bleu_perso1_et3.png"));
-    ImageIcon img_bleu_perso2_et0 = new javax.swing.ImageIcon(getClass().getResource("/images/bleu_perso2_et0.png"));
-    ImageIcon img_bleu_perso2_et1 = new javax.swing.ImageIcon(getClass().getResource("/images/bleu_perso2_et1.png"));
-    ImageIcon img_bleu_perso2_et2 = new javax.swing.ImageIcon(getClass().getResource("/images/bleu_perso2_et2.png"));
-    ImageIcon img_bleu_perso2_et3 = new javax.swing.ImageIcon(getClass().getResource("/images/bleu_perso2_et3.png"));
     
     ImageIcon img_rouge_perso1_et0 = new javax.swing.ImageIcon(getClass().getResource("/images/rouge_perso1_et0.png"));
     ImageIcon img_rouge_perso1_et1 = new javax.swing.ImageIcon(getClass().getResource("/images/rouge_perso1_et1.png"));
     ImageIcon img_rouge_perso1_et2 = new javax.swing.ImageIcon(getClass().getResource("/images/rouge_perso1_et2.png"));
     ImageIcon img_rouge_perso1_et3 = new javax.swing.ImageIcon(getClass().getResource("/images/rouge_perso1_et3.png"));
-    ImageIcon img_rouge_perso2_et0 = new javax.swing.ImageIcon(getClass().getResource("/images/rouge_perso2_et0.png"));
-    ImageIcon img_rouge_perso2_et1 = new javax.swing.ImageIcon(getClass().getResource("/images/rouge_perso2_et1.png"));
-    ImageIcon img_rouge_perso2_et2 = new javax.swing.ImageIcon(getClass().getResource("/images/rouge_perso2_et2.png"));
-    ImageIcon img_rouge_perso2_et3 = new javax.swing.ImageIcon(getClass().getResource("/images/rouge_perso2_et3.png"));
     
     ImageIcon img_noir_perso1_et0 = new javax.swing.ImageIcon(getClass().getResource("/images/noir_perso1_et0.png"));
     ImageIcon img_noir_perso1_et1 = new javax.swing.ImageIcon(getClass().getResource("/images/noir_perso1_et1.png"));
     ImageIcon img_noir_perso1_et2 = new javax.swing.ImageIcon(getClass().getResource("/images/noir_perso1_et2.png"));
     ImageIcon img_noir_perso1_et3 = new javax.swing.ImageIcon(getClass().getResource("/images/noir_perso1_et3.png"));
-    ImageIcon img_noir_perso2_et0 = new javax.swing.ImageIcon(getClass().getResource("/images/noir_perso2_et0.png"));
-    ImageIcon img_noir_perso2_et1 = new javax.swing.ImageIcon(getClass().getResource("/images/noir_perso2_et1.png"));
-    ImageIcon img_noir_perso2_et2 = new javax.swing.ImageIcon(getClass().getResource("/images/noir_perso2_et2.png"));
-    ImageIcon img_noir_perso2_et3 = new javax.swing.ImageIcon(getClass().getResource("/images/noir_perso2_et3.png"));
     
     ImageIcon img_vert_perso1_et0 = new javax.swing.ImageIcon(getClass().getResource("/images/vert_perso1_et0.png"));
     ImageIcon img_vert_perso1_et1 = new javax.swing.ImageIcon(getClass().getResource("/images/vert_perso1_et1.png"));
     ImageIcon img_vert_perso1_et2 = new javax.swing.ImageIcon(getClass().getResource("/images/vert_perso1_et2.png"));
     ImageIcon img_vert_perso1_et3 = new javax.swing.ImageIcon(getClass().getResource("/images/vert_perso1_et3.png"));
-    ImageIcon img_vert_perso2_et0 = new javax.swing.ImageIcon(getClass().getResource("/images/vert_perso2_et0.png"));
-    ImageIcon img_vert_perso2_et1 = new javax.swing.ImageIcon(getClass().getResource("/images/vert_perso2_et1.png"));
-    ImageIcon img_vert_perso2_et2 = new javax.swing.ImageIcon(getClass().getResource("/images/vert_perso2_et2.png"));
-    ImageIcon img_vert_perso2_et3 = new javax.swing.ImageIcon(getClass().getResource("/images/vert_perso2_et3.png"));
     
     public CelluleGraphique (Cellule UneCellule, int  x,int  y){
         CelluleAssociee = UneCellule;
