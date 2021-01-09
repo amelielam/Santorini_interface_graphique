@@ -53,10 +53,12 @@ public class Plateau {
                 }else {
                     test= false;
                 }
+            } else {
+                test= false;
             }    
         }
-        else if (x_a==5 && y_a!=0 && y_a!=4){
-            if (Cases[x_a - 1][y_a + 1].PresencePion(PionJoue) == true || Cases[x_a][y_a + 1].PresencePion(PionJoue) == true || Cases[x_a][y_a - 1].PresencePion(PionJoue) == true || Cases[x_a - 1][y_a - 1].PresencePion(PionJoue) == true || Cases[x_a - 1][y_a].PresencePion(PionJoue) == true) {
+        else  if (x_a==0 && y_a==0){
+            if (Cases[x_a][y_a + 1].PresencePion(PionJoue) == true || Cases[x_a + 1][y_a + 1].PresencePion(PionJoue) == true || Cases[x_a + 1][y_a].PresencePion(PionJoue) == true) {
                 if (Cases[x_a][y_a].BlocCellule.Etage <= 3) {
                     if (Cases[x_a][y_a].BlocCellule.Etage - PionJoue.EtagePion == 0) {
                         Cases[x_a][y_a].AffecterPion(PionJoue);
@@ -73,68 +75,192 @@ public class Plateau {
                 }else {
                     test= false;
                 }
+            } else{
+                test= false;
+            }
+        }
+        else if (x_a==0 && y_a==4){
+            if (Cases[x_a + 1][y_a].PresencePion(PionJoue) == true || Cases[x_a + 1][y_a - 1].PresencePion(PionJoue) == true || Cases[x_a][y_a - 1].PresencePion(PionJoue) == true) {
+                if (Cases[x_a][y_a].BlocCellule.Etage <= 3) {
+                    if (Cases[x_a][y_a].BlocCellule.Etage - PionJoue.EtagePion == 0) {
+                        Cases[x_a][y_a].AffecterPion(PionJoue);
+                    }
+                    if (Cases[x_a][y_a].BlocCellule.Etage - PionJoue.EtagePion == 1) {
+                        Cases[x_a][y_a].AffecterPion(PionJoue);
+                        PionJoue.EtagePion += 1;
+                    }
+                    if (PionJoue.EtagePion - Cases[x_a][y_a].BlocCellule.Etage <= 3 && PionJoue.EtagePion - Cases[x_a][y_a].BlocCellule.Etage > 0) {
+                        PionJoue.EtagePion = Cases[x_a][y_a].BlocCellule.Etage;
+                        Cases[x_a][y_a].AffecterPion(PionJoue);
+                    }
+                    test= true;
+                }else {
+                    test= false;
+                }
+            } else{
+                test= false;
+            }
+        }
+        else if (x_a==4 && y_a!=0 && y_a!=4){
+            if (Cases[x_a - 1][y_a + 1].PresencePion(PionJoue) == true || Cases[x_a][y_a + 1].PresencePion(PionJoue) == true || Cases[x_a][y_a - 1].PresencePion(PionJoue) == true || Cases[x_a - 1][y_a - 1].PresencePion(PionJoue) == true || Cases[x_a - 1][y_a].PresencePion(PionJoue) == true) {
+                if (Cases[x_a][y_a].BlocCellule.Etage <= 3) {
+                    if (Cases[x_a][y_a].BlocCellule.Etage - PionJoue.EtagePion == 0) {
+                        Cases[x_a][y_a].AffecterPion(PionJoue);
+                        test= true;
+                    }
+                    else if (Cases[x_a][y_a].BlocCellule.Etage - PionJoue.EtagePion == 1) {
+                        Cases[x_a][y_a].AffecterPion(PionJoue);
+                        PionJoue.EtagePion += 1;
+                        test= true;
+                    }
+                    else if (PionJoue.EtagePion - Cases[x_a][y_a].BlocCellule.Etage <= 3 && PionJoue.EtagePion - Cases[x_a][y_a].BlocCellule.Etage > 0) {
+                        PionJoue.EtagePion = Cases[x_a][y_a].BlocCellule.Etage;
+                        Cases[x_a][y_a].AffecterPion(PionJoue);
+                        test= true;
+                    }
+                    else{
+                      test= false;  
+                    }
+                    
+                }else {
+                    test= false;
+                }
+            }else{
+                test= false;
             }   
         }
-        
+        else if (x_a==4 && y_a==0){
+            if (Cases[x_a - 1][y_a + 1].PresencePion(PionJoue) == true || Cases[x_a][y_a + 1].PresencePion(PionJoue) == true || Cases[x_a - 1][y_a].PresencePion(PionJoue) == true) {
+                if (Cases[x_a][y_a].BlocCellule.Etage <= 3) {
+                    if (Cases[x_a][y_a].BlocCellule.Etage - PionJoue.EtagePion == 0) {
+                        Cases[x_a][y_a].AffecterPion(PionJoue);
+                        test= true;
+                    }
+                    else if (Cases[x_a][y_a].BlocCellule.Etage - PionJoue.EtagePion == 1) {
+                        Cases[x_a][y_a].AffecterPion(PionJoue);
+                        PionJoue.EtagePion += 1;
+                        test= true;
+                    }
+                    else if (PionJoue.EtagePion - Cases[x_a][y_a].BlocCellule.Etage <= 3 && PionJoue.EtagePion - Cases[x_a][y_a].BlocCellule.Etage > 0) {
+                        PionJoue.EtagePion = Cases[x_a][y_a].BlocCellule.Etage;
+                        Cases[x_a][y_a].AffecterPion(PionJoue);
+                        test= true;
+                    } else {
+                    test= false;
+                    }
+                }else {
+                    test= false;
+                }
+            } else{
+                test= false;
+            }
+        }
+        else if (x_a==4 && y_a==4){
+            if (Cases[x_a - 1][y_a - 1].PresencePion(PionJoue) == true || Cases[x_a][y_a - 1].PresencePion(PionJoue) == true || Cases[x_a - 1][y_a].PresencePion(PionJoue) == true) {
+                if (Cases[x_a][y_a].BlocCellule.Etage <= 3) {
+                    if (Cases[x_a][y_a].BlocCellule.Etage - PionJoue.EtagePion == 0) {
+                        Cases[x_a][y_a].AffecterPion(PionJoue);
+                        test= true;
+                    }
+                    else if (Cases[x_a][y_a].BlocCellule.Etage - PionJoue.EtagePion == 1) {
+                        Cases[x_a][y_a].AffecterPion(PionJoue);
+                        PionJoue.EtagePion += 1;
+                        test= true;
+                    }
+                    else if (PionJoue.EtagePion - Cases[x_a][y_a].BlocCellule.Etage <= 3 && PionJoue.EtagePion - Cases[x_a][y_a].BlocCellule.Etage > 0) {
+                        PionJoue.EtagePion = Cases[x_a][y_a].BlocCellule.Etage;
+                        Cases[x_a][y_a].AffecterPion(PionJoue);
+                        test= true;
+                    }
+                    else{
+                        test= false;
+                    }
+                }else {
+                    test= false;
+                }
+            } else{
+                test= false;
+            }
+        }
         else if (y_a==0 && x_a!=0 && x_a!=4){
             if (Cases[x_a - 1][y_a + 1].PresencePion(PionJoue) == true || Cases[x_a][y_a + 1].PresencePion(PionJoue) == true || Cases[x_a + 1][y_a + 1].PresencePion(PionJoue) == true || Cases[x_a + 1][y_a].PresencePion(PionJoue) == true || Cases[x_a - 1][y_a].PresencePion(PionJoue) == true) {
                 if (Cases[x_a][y_a].BlocCellule.Etage <= 3) {
                     if (Cases[x_a][y_a].BlocCellule.Etage - PionJoue.EtagePion == 0) {
                         Cases[x_a][y_a].AffecterPion(PionJoue);
+                        test= true;
                     }
-                    if (Cases[x_a][y_a].BlocCellule.Etage - PionJoue.EtagePion == 1) {
+                    else if (Cases[x_a][y_a].BlocCellule.Etage - PionJoue.EtagePion == 1) {
                         Cases[x_a][y_a].AffecterPion(PionJoue);
                         PionJoue.EtagePion += 1;
+                        test= true;
                     }
-                    if (PionJoue.EtagePion - Cases[x_a][y_a].BlocCellule.Etage <= 3 && PionJoue.EtagePion - Cases[x_a][y_a].BlocCellule.Etage > 0) {
+                    else if (PionJoue.EtagePion - Cases[x_a][y_a].BlocCellule.Etage <= 3 && PionJoue.EtagePion - Cases[x_a][y_a].BlocCellule.Etage > 0) {
                         PionJoue.EtagePion = Cases[x_a][y_a].BlocCellule.Etage;
                         Cases[x_a][y_a].AffecterPion(PionJoue);
+                        test= true;
+                    } else {
+                        test= false;
                     }
-                    test= true;
                 }else {
                     test= false;
                 }
+            } else{
+                test= false;
             }
         }
-        else if (y_a==5 && x_a!=0 && x_a!=4){
+        else if (y_a==4 && x_a!=0 && x_a!=4){
             if (Cases[x_a + 1][y_a].PresencePion(PionJoue) == true || Cases[x_a + 1][y_a - 1].PresencePion(PionJoue) == true || Cases[x_a][y_a - 1].PresencePion(PionJoue) == true || Cases[x_a - 1][y_a - 1].PresencePion(PionJoue) == true || Cases[x_a - 1][y_a].PresencePion(PionJoue) == true) {
                 if (Cases[x_a][y_a].BlocCellule.Etage <= 3) {
                     if (Cases[x_a][y_a].BlocCellule.Etage - PionJoue.EtagePion == 0) {
                         Cases[x_a][y_a].AffecterPion(PionJoue);
+                        test= true;
                     }
-                    if (Cases[x_a][y_a].BlocCellule.Etage - PionJoue.EtagePion == 1) {
+                    else if (Cases[x_a][y_a].BlocCellule.Etage - PionJoue.EtagePion == 1) {
                         Cases[x_a][y_a].AffecterPion(PionJoue);
                         PionJoue.EtagePion += 1;
+                        
+                        test= true;
                     }
-                    if (PionJoue.EtagePion - Cases[x_a][y_a].BlocCellule.Etage <= 3 && PionJoue.EtagePion - Cases[x_a][y_a].BlocCellule.Etage > 0) {
+                    else if (PionJoue.EtagePion - Cases[x_a][y_a].BlocCellule.Etage <= 3 && PionJoue.EtagePion - Cases[x_a][y_a].BlocCellule.Etage > 0) {
                         PionJoue.EtagePion = Cases[x_a][y_a].BlocCellule.Etage;
                         Cases[x_a][y_a].AffecterPion(PionJoue);
+                    } else{
+                      test= false;  
                     }
-                    test= true;
+                    
                 }else {
                     test= false;
                 }
+            }else{
+                test= false;
             }
         }
-        else if (y_a!=0 &&y_a!=4 && x_a!=0 && x_a!=4){
+        else if (y_a!=0 && y_a!=4 && x_a!=0 && x_a!=4){
             if(Cases[x_a - 1][y_a + 1].PresencePion(PionJoue) == true || Cases[x_a][y_a + 1].PresencePion(PionJoue) == true || Cases[x_a + 1][y_a + 1].PresencePion(PionJoue) == true || Cases[x_a + 1][y_a].PresencePion(PionJoue) == true || Cases[x_a + 1][y_a - 1].PresencePion(PionJoue) == true || Cases[x_a][y_a - 1].PresencePion(PionJoue) == true || Cases[x_a - 1][y_a - 1].PresencePion(PionJoue) == true || Cases[x_a - 1][y_a].PresencePion(PionJoue) == true) {
             //vérification que le pion est à un bon niveau:
                 if (Cases[x_a][y_a].BlocCellule.Etage <= 3) {
                     if (Cases[x_a][y_a].BlocCellule.Etage - PionJoue.EtagePion == 0) {
                         Cases[x_a][y_a].AffecterPion(PionJoue);
+                        test= true;
                     }
-                    if (Cases[x_a][y_a].BlocCellule.Etage - PionJoue.EtagePion == 1) {
+                    else if (Cases[x_a][y_a].BlocCellule.Etage - PionJoue.EtagePion == 1) {
                         Cases[x_a][y_a].AffecterPion(PionJoue);
                         PionJoue.EtagePion += 1;
+                        test= true;
+                        
                     }
-                    if (PionJoue.EtagePion - Cases[x_a][y_a].BlocCellule.Etage <= 3 && PionJoue.EtagePion - Cases[x_a][y_a].BlocCellule.Etage > 0) {
+                    else if (PionJoue.EtagePion - Cases[x_a][y_a].BlocCellule.Etage <= 3 && PionJoue.EtagePion - Cases[x_a][y_a].BlocCellule.Etage > 0) {
                         PionJoue.EtagePion = Cases[x_a][y_a].BlocCellule.Etage;
                         Cases[x_a][y_a].AffecterPion(PionJoue);
+                        test= true;
+                    } else {
+                    test= false;
                     }
-                    test= true;
-                }else {
+                }else{
                     test= false;
                 }
+            }else{
+                test= false;
             }
         }
         return test;
@@ -152,9 +278,33 @@ public class Plateau {
                 }else {
                     test= false;
                 }
+            }else {
+               test= false; 
+            }    
+        } else if (i==0 && j==0){
+            if (Cases[i][j + 1].PresencePion(PionAdjacent) == true || Cases[i + 1][j + 1].PresencePion(PionAdjacent) == true || Cases[i + 1][j].PresencePion(PionAdjacent) == true) {
+                if (Cases[i][j].BlocCellule.Etage <= 4) {
+                    Cases[i][j].AffecterBloc(BlocJoue);
+                    test= true;
+                }else {
+                    test= false;
+                }
+            }else {
+               test= false; 
+            }    
+        } else if (i==0 && j==4){
+            if (Cases[i][j - 1].PresencePion(PionAdjacent) == true || Cases[i + 1][j - 1].PresencePion(PionAdjacent) == true || Cases[i + 1][j].PresencePion(PionAdjacent) == true) {
+                if (Cases[i][j].BlocCellule.Etage <= 4) {
+                    Cases[i][j].AffecterBloc(BlocJoue);
+                    test= true;
+                }else {
+                    test= false;
+                }
+            }else {
+               test= false; 
             }    
         }
-        else if (i==5 && j!=0 && j!=4){
+        else if (i==4 && j!=0 && j!=4){
             if (Cases[i - 1][j + 1].PresencePion(PionAdjacent) == true || Cases[i][j + 1].PresencePion(PionAdjacent) == true || Cases[i][j - 1].PresencePion(PionAdjacent) == true || Cases[i - 1][j - 1].PresencePion(PionAdjacent) == true || Cases[i - 1][j].PresencePion(PionAdjacent) == true) {
                 if (Cases[i][j].BlocCellule.Etage <= 4) {
                     Cases[i][j].AffecterBloc(BlocJoue);
@@ -162,10 +312,32 @@ public class Plateau {
                 }else {
                     test= false;
                 }
+            }else {
+               test= false; 
             }   
-        }
-        
-        else if (j==0 && i!=0 && i!=4){
+        }else if (i==4 && j==0){
+            if (Cases[i][j + 1].PresencePion(PionAdjacent) == true || Cases[i - 1][j + 1].PresencePion(PionAdjacent) == true || Cases[i - 1][j].PresencePion(PionAdjacent) == true) {
+                if (Cases[i][j].BlocCellule.Etage <= 4) {
+                    Cases[i][j].AffecterBloc(BlocJoue);
+                    test= true;
+                }else {
+                    test= false;
+                }
+            }else {
+               test= false; 
+            }    
+        } else if (i==4 && j==4){
+            if (Cases[i][j - 1].PresencePion(PionAdjacent) == true || Cases[i - 1][j - 1].PresencePion(PionAdjacent) == true || Cases[i - 1][j].PresencePion(PionAdjacent) == true) {
+                if (Cases[i][j].BlocCellule.Etage <= 4) {
+                    Cases[i][j].AffecterBloc(BlocJoue);
+                    test= true;
+                }else {
+                    test= false;
+                }
+            }else {
+               test= false; 
+            }    
+        } else if (j==0 && i!=0 && i!=4){
             if (Cases[i - 1][j + 1].PresencePion(PionAdjacent) == true || Cases[i][j + 1].PresencePion(PionAdjacent) == true || Cases[i + 1][j + 1].PresencePion(PionAdjacent) == true || Cases[i + 1][j].PresencePion(PionAdjacent) == true || Cases[i - 1][j].PresencePion(PionAdjacent) == true) {
                 if (Cases[i][j].BlocCellule.Etage <= 4) {
                     Cases[i][j].AffecterBloc(BlocJoue);
@@ -173,9 +345,11 @@ public class Plateau {
                 }else {
                     test= false;
                 }
+            }else {
+               test= false; 
             }
         }
-        else if (j==5 && i!=0 && i!=4){
+        else if (j==4 && i!=0 && i!=4){
             if (Cases[i + 1][j].PresencePion(PionAdjacent) == true || Cases[i + 1][j - 1].PresencePion(PionAdjacent) == true || Cases[i][j - 1].PresencePion(PionAdjacent) == true || Cases[i - 1][j - 1].PresencePion(PionAdjacent) == true || Cases[i - 1][j].PresencePion(PionAdjacent) == true) {
                 if (Cases[i][j].BlocCellule.Etage <= 4) {
                     Cases[i][j].AffecterBloc(BlocJoue);
@@ -183,6 +357,8 @@ public class Plateau {
                 }else {
                     test= false;
                 }
+            }else {
+               test= false; 
             }
         }
         else if (j!=0 &&j!=4 && i!=0 && i!=4){
@@ -193,6 +369,8 @@ public class Plateau {
                 }else {
                     test= false;
                 }
+            }else {
+               test= false; 
             }
         }
         return test;

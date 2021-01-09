@@ -11,7 +11,6 @@ package projetsantorini_soulie_lamassiause_perello;
  */
 public class Joueur {
     String Nom ;
-    Dieu DieuJoueur ;
     String CouleurJoueur ;
     Pion Pion1;
     Pion Pion2;

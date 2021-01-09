@@ -34,7 +34,7 @@ public class Cellule {
     } 
     
     public boolean PresencePion (Pion PionJoue){
-        if (PionCourantCellule != null) {
+        if (PionCourantCellule == PionJoue) {
             return true ;
         }
         else {

@@ -26,6 +26,7 @@ public class FenetreDeJeu extends javax.swing.JFrame {
     Plateau PDJ = new Plateau();
     LinkedList<Bloc> BlocsDispo = new LinkedList<>();
     Bloc BlocCourantPartie;
+    Pion PionSelectionne;
     int xlast;
     int ylast;
     boolean PlacementPion1_J1 = true;
@@ -52,6 +53,7 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         PlateauDeJeu.setVisible(false);
         InfoJoueurs.setVisible(false);
         InfoPartie.setVisible(false);
+        FinDePartie.setVisible(false);
         for (int i = 4; i >= 0; i--) {
             for (int j = 0; j < 5; j++) {
                 CelluleGraphique CellGraph = new CelluleGraphique(PDJ.Cases[i][j], i, j);
@@ -69,13 +71,21 @@ public class FenetreDeJeu extends javax.swing.JFrame {
                             ClicDeplacement = false;
                         }
                         if (Construction == true) {
-                            ConstruireBloc(CellGraph, JoueurCourantPartie.Pion1, CellGraph.coord_x, CellGraph.coord_y);
-                            JoueurSuivant();
-                            message.setText("C'est à " + JoueurCourantPartie.Nom + " de jouer.\nSélectionnez un pion à déplacer.");
-                            ClicDeplacement = true;
+                            if (PDJ.Cases[CellGraph.coord_x][CellGraph.coord_y].CaseSansPion() == false) {
+                                message.setText("Cette case est déja occupée par un pion\n\nVous ne pouvez pas ajouter de bloc ici");
+                            }else{
+                                ConstruireBloc(CellGraph, PionSelectionne, CellGraph.coord_x, CellGraph.coord_y);
+                                
+                        }
                         }
                         if (Deplacement == true) {
                             DeplacerPerso(CellGraph, CellGraph.coord_x, CellGraph.coord_y);
+                            if (PionSelectionne.EtagePion==3){
+                                Construction=false;
+                                JoueurGagnant.setText(JoueurCourantPartie.Nom);
+                                PlateauDeJeu.removeAll();
+                                FinDePartie.setVisible(true);
+                            }
 
                         }
                         PlacerPions(CellGraph);
@@ -90,19 +100,28 @@ public class FenetreDeJeu extends javax.swing.JFrame {
 
     public void PlacerPions(CelluleGraphique CellGraph) {
         if (PlacementPion2_J4 == true) {
-            CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion2);
-            JoueurSuivant();
-            message.setText(JoueurCourantPartie.Nom + " quel pion souhaitez vous déplacer?");
-            Deplacement = true;
-            PlacementPion2_J4 = false;
+            if (PDJ.Cases[CellGraph.coord_x][CellGraph.coord_y].CaseSansPion() == true) {
+                CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion2);
+                JoueurSuivant();
+                message.setText(JoueurCourantPartie.Nom + " quel pion souhaitez vous déplacer?");
+                Deplacement = true;
+                PlacementPion2_J4 = false;
+            } else {
+                message.setText("Cette case est déja occupée par un autre pion \nIl faut en choisir une autre");
+            }
         }
         if (PlacementPion1_J4 == true) {
-            CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion1);
-            message.setText(JoueurCourantPartie.Nom + " placez votre 2ème pion");
-            PlacementPion2_J4 = true;
-            PlacementPion1_J4 = false;
+            if (PDJ.Cases[CellGraph.coord_x][CellGraph.coord_y].CaseSansPion() == true) {
+                CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion1);
+                message.setText(JoueurCourantPartie.Nom + " placez votre 2ème pion");
+                PlacementPion2_J4 = true;
+                PlacementPion1_J4 = false;
+            } else {
+                message.setText("Cette case est déja occupée par un autre pion \nIl faut en choisir une autre");
+            }
         }
         if (PlacementPion2_J3 == true) {
+            if (PDJ.Cases[CellGraph.coord_x][CellGraph.coord_y].CaseSansPion() == true) {
             CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion2);
             if (NombreDeJoueurs() == 4) {
                 JoueurSuivant();
@@ -114,14 +133,22 @@ public class FenetreDeJeu extends javax.swing.JFrame {
                 Deplacement = true;
             }
             PlacementPion2_J3 = false;
+            }else{
+                message.setText("Cette case est déja occupée par un autre pion \nIl faut en choisir une autre");
+            }
         }
         if (PlacementPion1_J3 == true) {
-            CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion1);
-            message.setText(JoueurCourantPartie.Nom + " placez votre 2ème pion");
-            PlacementPion2_J3 = true;
-            PlacementPion1_J3 = false;
+            if (PDJ.Cases[CellGraph.coord_x][CellGraph.coord_y].CaseSansPion() == true) {
+                CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion1);
+                message.setText(JoueurCourantPartie.Nom + " placez votre 2ème pion");
+                PlacementPion2_J3 = true;
+                PlacementPion1_J3 = false;
+            } else {
+                message.setText("Cette case est déja occupée par un autre pion \nIl faut en choisir une autre");
+            }
         }
         if (PlacementPion2_J2 == true) {
+            if (PDJ.Cases[CellGraph.coord_x][CellGraph.coord_y].CaseSansPion() == true) {
             CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion2);
             if (NombreDeJoueurs() == 3 || NombreDeJoueurs() == 4) {
                 JoueurSuivant();
@@ -133,19 +160,30 @@ public class FenetreDeJeu extends javax.swing.JFrame {
                 Deplacement = true;
             }
             PlacementPion2_J2 = false;
+            }else {
+                message.setText("Cette case est déja occupée par un autre pion \nIl faut en choisir une autre");
+            }
         }
         if (PlacementPion1_J2 == true) {
-            CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion1);
-            message.setText(JoueurCourantPartie.Nom + " placez votre 2ème pion");
-            PlacementPion2_J2 = true;
-            PlacementPion1_J2 = false;
+            if (PDJ.Cases[CellGraph.coord_x][CellGraph.coord_y].CaseSansPion() == true) {
+                CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion1);
+                message.setText(JoueurCourantPartie.Nom + " placez votre 2ème pion");
+                PlacementPion2_J2 = true;
+                PlacementPion1_J2 = false;
+            } else {
+                message.setText("Cette case est déja occupée par un autre pion \nIl faut en choisir une autre");
+            }
         }
         if (PlacementPion2_J1 == true) {
-            CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion2);
-            JoueurSuivant();
-            message.setText("C'est au tour de " + JoueurCourantPartie.Nom + "\n\n" + JoueurCourantPartie.Nom + " vous pouvez placer votre premier pion");
-            PlacementPion1_J2 = true;
-            PlacementPion2_J1 = false;
+            if (PDJ.Cases[CellGraph.coord_x][CellGraph.coord_y].CaseSansPion() == true) {
+                CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion2);
+                JoueurSuivant();
+                message.setText("C'est au tour de " + JoueurCourantPartie.Nom + "\n\n" + JoueurCourantPartie.Nom + " vous pouvez placer votre premier pion");
+                PlacementPion1_J2 = true;
+                PlacementPion2_J1 = false;
+            } else {
+                message.setText("Cette case est déja occupée par un autre pion \nIl faut en choisir une autre");
+            }
         }
         if (PlacementPion1_J1 == true) {
             CellGraph.CelluleAssociee.AffecterPion(JoueurCourantPartie.Pion1);
@@ -158,32 +196,44 @@ public class FenetreDeJeu extends javax.swing.JFrame {
 
     public void DeplacerPerso(CelluleGraphique CellGraph, int i, int j) {
         //si pion sur case sélectionnée est bien le sien alors peut sinon non
+        
         if (PersoSelectionne == true) {
             //phase de déplacement du personnage : on a cliqué sur la case de destination [i,j]
-            if (ReSelectionDeplacement=true){
-                PersoSelectionne=false;
-                ReSelectionDeplacement=false;
+            if (ReSelectionDeplacement = true) {
+                PersoSelectionne = true;
+                ReSelectionDeplacement = false;
             }
-            if (PDJ.Cases[i][j].CaseSansPion()==true) {
-                PDJ.DeplacerPion(JoueurCourantPartie.Pion1, i, j);
-                PDJ.Cases[xlast][ylast].SupprimerPion();//supprimer le pion qui était à la position d'avant
-                PlateauDeJeu.repaint();
-                message.setText(JoueurCourantPartie.Nom + " sélectionnez une case pour placer un bloc");
-                DeuxiemeClic = true;
-                Construction = true;
+            if (PDJ.Cases[i][j].CaseSansPion() == true) {
+                PDJ.DeplacerPion(PionSelectionne, i, j);
+                if (PDJ.DeplacerPion(PionSelectionne, i, j)==false){
+                    message.setText("vous ne pouvez pas déplacer le pion ici");
+                }else{
+                    PDJ.Cases[xlast][ylast].SupprimerPion();//supprimer le pion qui était à la position d'avant
+                    PlateauDeJeu.repaint();
+                    message.setText(JoueurCourantPartie.Nom + " sélectionnez une case pour placer un bloc");
+                    DeuxiemeClic = true;
+                    Construction = true;
+                }
             } else {
-                message.setText("Cette case est déja occupée par un autre pion, il faut en choisir une autre");
-                ReSelectionDeplacement=true;
+                message.setText("Cette case est déja occupée par un autre pion\n\nIl faut en choisir une autre");
+                ReSelectionDeplacement = true;
             }
         }
         if (PersoSelectionne == false) {
             //phase de sélection de personnage qui se trouve sur la case [i,j]
-            if (CellGraph.CelluleAssociee.PresencePion(JoueurCourantPartie.Pion1) == true || CellGraph.CelluleAssociee.PresencePion(JoueurCourantPartie.Pion2) == true) {
+            if (CellGraph.CelluleAssociee.PresencePion(JoueurCourantPartie.Pion1) == true){ 
+                PionSelectionne=JoueurCourantPartie.Pion1;
                 xlast = CellGraph.coord_x;
                 ylast = CellGraph.coord_y;
-                message.setText("vous voulez déplacer le pion situé en [" + xlast + "," + ylast + "]\nOù voulez-vous le placer?");
+                message.setText("Où voulez-vous le placer?");
                 PersoSelectionne = true;
-
+            }
+            else if(CellGraph.CelluleAssociee.PresencePion(JoueurCourantPartie.Pion2) == true) {
+                PionSelectionne=JoueurCourantPartie.Pion2;
+                xlast = CellGraph.coord_x;
+                ylast = CellGraph.coord_y;
+                message.setText("Où voulez-vous le placer?");
+                PersoSelectionne = true;
             }
         }
 
@@ -192,9 +242,28 @@ public class FenetreDeJeu extends javax.swing.JFrame {
     public void ConstruireBloc(CelluleGraphique CellGraph, Pion PionAdjacent, int i, int j) {
         //phase de sélection de de la case où on veut placer le bloc
         //phase de construction du bloc : on a cliqué sur la case de destination
-        PDJ.AjouterBlocSurCellule(BlocsDispo.getLast(), PionAdjacent, i, j);
-        BlocsDispo.removeLast();
+        if (CellGraph.CelluleAssociee.BlocCellule.Etage==0){
+            if (PDJ.AjouterBlocSurCellule(CellGraph.CelluleAssociee.BlocCellule, PionAdjacent, i, j)==false){
+                message.setText("Vous ne pouvez pas placer de bloc ici");
+            }else{
+                PDJ.AjouterBlocSurCellule(BlocsDispo.getLast(),PionAdjacent , i, j);
+                BlocsDispo.removeLast();
+                JoueurSuivant();
+                message.setText("C'est à " + JoueurCourantPartie.Nom + " de jouer.\nSélectionnez un pion à déplacer.");
+                ClicDeplacement = true;
+            }
+        }else{ 
+            if (PDJ.AjouterBlocSurCellule(CellGraph.CelluleAssociee.BlocCellule, PionAdjacent, i, j)==false){
+                message.setText("Vous ne pouvez pas placer de bloc ici");
+            }else{
+                PDJ.AjouterBlocSurCellule(BlocsDispo.getLast(),PionAdjacent , i, j);
+                JoueurSuivant();
+                message.setText("C'est à " + JoueurCourantPartie.Nom + " de jouer.\nSélectionnez un pion à déplacer.");
+                ClicDeplacement = true;
+            }
+        }
         PlateauDeJeu.repaint();
+        
 
     }
 
@@ -207,6 +276,11 @@ public class FenetreDeJeu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        FinDePartie = new javax.swing.JPanel();
+        jLabel20 = new javax.swing.JLabel();
+        JoueurGagnant = new javax.swing.JLabel();
+        jLabel21 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         DebPartie = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         jComboBox1 = new javax.swing.JComboBox<>();
@@ -254,6 +328,31 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(204, 204, 204));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        FinDePartie.setBackground(new java.awt.Color(51, 102, 255));
+        FinDePartie.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel20.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel20.setText("vous avez gagné !");
+        FinDePartie.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 80, -1, -1));
+
+        JoueurGagnant.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        JoueurGagnant.setText("jLabel21");
+        FinDePartie.add(JoueurGagnant, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 80, -1, -1));
+
+        jLabel21.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel21.setText("Bravo");
+        FinDePartie.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 80, -1, -1));
+
+        jButton1.setText("Rejouer");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        FinDePartie.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 170, 100, 30));
+
+        getContentPane().add(FinDePartie, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 280, 650, 240));
 
         DebPartie.setBackground(new java.awt.Color(153, 204, 255));
         DebPartie.setBorder(javax.swing.BorderFactory.createTitledBorder(""));
@@ -417,7 +516,7 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         message.setRows(5);
         jScrollPane1.setViewportView(message);
 
-        InfoPartie.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 370, -1));
+        InfoPartie.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 410, -1));
 
         getContentPane().add(InfoPartie, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 200, 430, 180));
 
@@ -731,6 +830,17 @@ public class FenetreDeJeu extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_PlateauDeJeuMouseClicked
 
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        DebutDePartie.setVisible(false);
+        PlateauDeJeu.setVisible(false);
+        InfoJoueurs.setVisible(false);
+        InfoPartie.setVisible(false);
+        FinDePartie.setVisible(false);
+        DebPartie.setVisible(true);
+        FinDePartie.setVisible(false);
+    }//GEN-LAST:event_jButton1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -774,14 +884,17 @@ public class FenetreDeJeu extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel DebPartie;
     private javax.swing.JPanel DebutDePartie;
+    private javax.swing.JPanel FinDePartie;
     private javax.swing.JPanel InfoJoueurs;
     private javax.swing.JPanel InfoPartie;
+    private javax.swing.JLabel JoueurGagnant;
     private javax.swing.JTextField NomJoueur1;
     private javax.swing.JTextField NomJoueur2;
     private javax.swing.JTextField NomJoueur3;
     private javax.swing.JTextField NomJoueur4;
     private javax.swing.JPanel PlateauDeJeu;
     private javax.swing.JButton btn_start;
+    private javax.swing.JButton jButton1;
     private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -795,6 +908,8 @@ public class FenetreDeJeu extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel20;
+    private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
